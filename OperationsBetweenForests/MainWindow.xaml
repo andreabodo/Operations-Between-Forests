@@ -1,0 +1,25 @@
+﻿<Window x:Class="OperationsBetweenForests.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OperationsBetweenForests"
+        xmlns:controls="clr-namespace:GraphX.Controls;assembly=GraphX.WPF.Controls"
+        xmlns:models="clr-namespace:OperationsBetweenForests.Models"
+        xmlns:output ="clr-namespace:OperationsBetweenForests.Output"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <TabControl x:Name="GeneralTab" Margin="0">
+        <TabItem Header="Input">
+            <local:UserControl1/>
+        </TabItem>
+        <TabItem Header="Output">
+            <output:GraphOutputTab/>
+        </TabItem>
+        <TabItem Header="Calculator">
+            <controls:ZoomControl x:Name="zoomCtrl" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <models:MyGraphArea x:Name="GraphArea" Margin="0,0,-600,-440" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
+            </controls:ZoomControl>
+        </TabItem>
+    </TabControl>
+</Window>
