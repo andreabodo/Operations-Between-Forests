@@ -3,6 +3,7 @@ using GraphX.Controls;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using GraphX.Logic.Algorithms.OverlapRemoval;
 using OperationsBetweenForests.Models;
+using QuickGraph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace OperationsBetweenForests.Output
 
             //Create data graph object
             var graph = new MyGraph();
-
+            int weight = 1;
             //Create and add vertices using some DataSource for ID's
             int[] DataSource = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
             foreach (var item in DataSource)
@@ -57,6 +58,11 @@ namespace OperationsBetweenForests.Output
             graph.AddEdge(new DataEdge(vlist[0], vlist[1]));
             graph.AddEdge(new DataEdge(vlist[3], vlist[5]));
             graph.AddEdge(new DataEdge(vlist[10], vlist[11]));
+            graph.AddEdge(new DataEdge(vlist[11], vlist[12]));
+            graph.AddEdge(new DataEdge(vlist[6], vlist[0]));
+            graph.AddEdge(new DataEdge(vlist[6], vlist[10]));
+            DataEdge a = new DataEdge(vlist[0], vlist[2]);
+           
 
             //Generate random edges for the vertices
             /*foreach (var item in vlist)
@@ -69,13 +75,13 @@ namespace OperationsBetweenForests.Output
             var LogicCore = new MyGXLogicCore(graph); //   C'ERANO PROBLEMI PERCHè IL LOGIC CORE COME NELLA DOC NON PRENDEVA IL GRAFO!!!
             //This property sets layout algorithm that will be used to calculate vertices positions
             //Different algorithms uses different values and some of them uses edge Weight property.
-            LogicCore.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.KK;
+            LogicCore.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.Tree;
             //Now we can set optional parameters using AlgorithmFactory
             //NOTE: default parameters can be automatically created each time you change Default algorithms
             LogicCore.DefaultLayoutAlgorithmParams =
-                               LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.KK);
+                               LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.Tree);
             //Unfortunately to change algo parameters you need to specify params type which is different for every algorithm.
-            ((KKLayoutParameters)LogicCore.DefaultLayoutAlgorithmParams).MaxIterations = 100;
+            ((SimpleTreeLayoutParameters)LogicCore.DefaultLayoutAlgorithmParams).Direction = LayoutDirection.TopToBottom;
 
             //This property sets vertex overlap removal algorithm.
             //Such algorithms help to arrange vertices in the layout so no one overlaps each other.
@@ -84,7 +90,7 @@ namespace OperationsBetweenForests.Output
             LogicCore.DefaultOverlapRemovalAlgorithmParams =
                               LogicCore.AlgorithmFactory.CreateOverlapRemovalParameters(OverlapRemovalAlgorithmTypeEnum.FSA);
             ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).HorizontalGap = 50;
-            ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 50;
+            ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 300;
 
             //This property sets edge routing algorithm that is used to build route paths according to algorithm logic.
             //For ex., SimpleER algorithm will try to set edge paths around vertices so no edge will intersect any vertex.
@@ -97,8 +103,15 @@ namespace OperationsBetweenForests.Output
 
             //Finally assign logic core to GraphArea object
             graphArea.LogicCore = LogicCore;
-            graphArea.GenerateGraph(true);
+
+            //Generate graph
            
+            graphArea.GenerateGraph(true);
+            graphArea.ShowAllEdgesLabels(false);
+            graphArea.ShowAllEdgesArrows(false);
+            graphArea.SetVerticesMathShape(VertexShape.Circle);
+
+
             Console.WriteLine("Generate graph clicked end");
         }
     }
