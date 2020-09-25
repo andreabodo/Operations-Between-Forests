@@ -66,7 +66,7 @@ namespace OperationsBetweenForests.Output
                 graph.AddEdge(new DataEdge(item, vertex2, Rand.Next(1, 14))
                 { Text = string.Format("{0} -> {1}", item, vertex2) });
             }*/
-            var LogicCore = new MyGXLogicCore(graph);
+            var LogicCore = new MyGXLogicCore(graph); //   C'ERANO PROBLEMI PERCHè IL LOGIC CORE COME NELLA DOC NON PRENDEVA IL GRAFO!!!
             //This property sets layout algorithm that will be used to calculate vertices positions
             //Different algorithms uses different values and some of them uses edge Weight property.
             LogicCore.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.KK;
