@@ -38,8 +38,7 @@ namespace OperationsBetweenForests.Output
             Random Rand = new Random();
 
             //Create data graph object
-            var graph = new MyGraph();
-            int weight = 1;
+            MyGraph graph = new MyGraph();
             //Create and add vertices using some DataSource for ID's
             int[] DataSource = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
             foreach (var item in DataSource)
@@ -105,7 +104,6 @@ namespace OperationsBetweenForests.Output
             graphArea.LogicCore = LogicCore;
 
             //Generate graph
-           
             graphArea.GenerateGraph(true);
             graphArea.ShowAllEdgesLabels(false);
             graphArea.ShowAllEdgesArrows(false);

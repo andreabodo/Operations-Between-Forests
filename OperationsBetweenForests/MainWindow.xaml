@@ -7,11 +7,12 @@
         xmlns:controls="clr-namespace:GraphX.Controls;assembly=GraphX.WPF.Controls"
         xmlns:models="clr-namespace:OperationsBetweenForests.Models"
         xmlns:output ="clr-namespace:OperationsBetweenForests.Output"
+        xmlns:input = "clr-namespace:OperationsBetweenForests.Input"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <TabControl x:Name="GeneralTab" Margin="0">
         <TabItem Header="Input">
-            <local:UserControl1/>
+            <input:GraphInputTab/>
         </TabItem>
         <TabItem Header="Output">
             <output:GraphOutputTab/>
