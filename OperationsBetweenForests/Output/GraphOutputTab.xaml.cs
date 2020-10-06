@@ -2,8 +2,11 @@
 using GraphX.Controls;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using GraphX.Logic.Algorithms.OverlapRemoval;
+using Microsoft.Win32;
 using OperationsBetweenForests.Models;
+using OperationsBetweenForests.Serialization;
 using QuickGraph;
+using QuickGraph.Algorithms.MaximumFlow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,35 +37,50 @@ namespace OperationsBetweenForests.Output
 
         private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Generate graph clicked begin");
-            Random Rand = new Random();
+            /* Console.WriteLine("Generate graph clicked begin");
+             Random Rand = new Random();*/
 
             //Create data graph object
-            MyGraph graph = new MyGraph();
-            //Create and add vertices using some DataSource for ID's
-            int[] DataSource = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-            foreach (var item in DataSource)
+            MyGraph graph = new MyGraph();/*
+             //Create and add vertices using some DataSource for ID's
+             int[] DataSource = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+             foreach (var item in DataSource)
+             {
+                 var ver = new DataVertex() { ID = item, Text = item.ToString()};
+                 graph.AddVertex(ver);
+                 Console.WriteLine(ver.ID + " " + ver.Text);
+             }
+
+
+
+
+             var vlist = graph.Vertices.ToList();
+
+             graph.AddEdge(new DataEdge(vlist[0], vlist[2]));
+             graph.AddEdge(new DataEdge(vlist[0], vlist[1]));
+             graph.AddEdge(new DataEdge(vlist[3], vlist[5]));
+             graph.AddEdge(new DataEdge(vlist[10], vlist[11]));
+             graph.AddEdge(new DataEdge(vlist[11], vlist[12]));
+             graph.AddEdge(new DataEdge(vlist[6], vlist[0]));
+             graph.AddEdge(new DataEdge(vlist[6], vlist[10]));
+             DataEdge a = new DataEdge(vlist[0], vlist[2]);*/
+
+            //load graph
+            OpenFileDialog loadD = new OpenFileDialog() { Filter = "TreeFile | *.xml", Title = "Seleziona il file da aprire"};
+            if (loadD.ShowDialog() != true) 
             {
-                var ver = new DataVertex() { ID = item, Text = item.ToString()};
-                graph.AddVertex(ver);
-                Console.WriteLine(ver.ID + " " + ver.Text);
+                try 
+                {
+                    graphArea.RebuildFromSerializationData(FileManager.DeserializeDataFromFile(loadD.FileName));
+                    graphArea.SetVerticesDrag(true, true);
+                    graphArea.UpdateAllEdges();
+                    zoomCtrl.ZoomToFill();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(String.Format("Apertura del file fallita.\n"), ex.Message);
+                }
             }
-
-
-            
-
-            var vlist = graph.Vertices.ToList();
-
-            graph.AddEdge(new DataEdge(vlist[0], vlist[2]));
-            graph.AddEdge(new DataEdge(vlist[0], vlist[1]));
-            graph.AddEdge(new DataEdge(vlist[3], vlist[5]));
-            graph.AddEdge(new DataEdge(vlist[10], vlist[11]));
-            graph.AddEdge(new DataEdge(vlist[11], vlist[12]));
-            graph.AddEdge(new DataEdge(vlist[6], vlist[0]));
-            graph.AddEdge(new DataEdge(vlist[6], vlist[10]));
-            DataEdge a = new DataEdge(vlist[0], vlist[2]);
-           
-
             //Generate random edges for the vertices
             /*foreach (var item in vlist)
             {
@@ -71,7 +89,12 @@ namespace OperationsBetweenForests.Output
                 graph.AddEdge(new DataEdge(item, vertex2, Rand.Next(1, 14))
                 { Text = string.Format("{0} -> {1}", item, vertex2) });
             }*/
-            var LogicCore = new MyGXLogicCore(graph); //   C'ERANO PROBLEMI PERCHè IL LOGIC CORE COME NELLA DOC NON PRENDEVA IL GRAFO!!!
+            var LogicCore = new MyGXLogicCore(); //   C'ERANO PROBLEMI PERCHè IL LOGIC CORE COME NELLA DOC NON PRENDEVA IL GRAFO!!!
+            //TODO capire come visualizzare il grafo da loading anzichè da creazione via codice. Il problema sembra essere sempre il fatto che
+            //il logic core richiede un grafo
+            LogicCore.Graph = graph;//TODO provare altrimenti a ricostruire il grafo ogni volta che viene caricato prendendo le strutture da quelle
+            //caricate in graphArea
+
             //This property sets layout algorithm that will be used to calculate vertices positions
             //Different algorithms uses different values and some of them uses edge Weight property.
             LogicCore.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.Tree;

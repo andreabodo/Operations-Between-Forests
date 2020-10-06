@@ -20,7 +20,7 @@ namespace OperationsBetweenForests.Models
         }
 
         //TODO My extension
-        public MyGraph(String name)
+        public MyGraph(String name): base()
         {
             Name = name;
         }
