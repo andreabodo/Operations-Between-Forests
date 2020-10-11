@@ -21,6 +21,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.IO;
 
 namespace OperationsBetweenForests.Output
 {
@@ -37,24 +40,40 @@ namespace OperationsBetweenForests.Output
 
         private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
         {
-            /* Console.WriteLine("Generate graph clicked begin");
-             Random Rand = new Random();*/
+             Console.WriteLine("Generate graph clicked begin");
+            MyGraph graph = new MyGraph();
+            //Random Rand = new Random();
+            OpenFileDialog loadD = new OpenFileDialog() { Filter = "TreeFile | *.json", Title = "Seleziona il file da aprire" };
+            if (loadD.ShowDialog() == true)
+            {
+                String jsonString = File.ReadAllText(loadD.FileName);
+                Node myNode = JsonSerializer.Deserialize<Node>(jsonString);
+                Console.WriteLine(myNode.ToString());
+                DataVertex father = new DataVertex() { Text = myNode.value };
+                List<Node> nodeList = myNode.hoSonno();
+                Node nodo;
+                foreach(Node n in nodeList)
+                {
+                    Console.WriteLine(n.value);
+                }
+               /* foreach(Node n in myNode.children)
+                {
+                    graph.AddEdge(new DataEdge(father, new DataVertex() { Text = n.value }));
+                }*/
+                
+            }
 
             //Create data graph object
-            MyGraph graph = new MyGraph();/*
+            
              //Create and add vertices using some DataSource for ID's
-             int[] DataSource = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+            /* int[] DataSource = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
              foreach (var item in DataSource)
              {
                  var ver = new DataVertex() { ID = item, Text = item.ToString()};
                  graph.AddVertex(ver);
                  Console.WriteLine(ver.ID + " " + ver.Text);
-             }
-
-
-
-
-             var vlist = graph.Vertices.ToList();
+             }*/
+            /* var vlist = graph.Vertices.ToList();
 
              graph.AddEdge(new DataEdge(vlist[0], vlist[2]));
              graph.AddEdge(new DataEdge(vlist[0], vlist[1]));
@@ -63,9 +82,9 @@ namespace OperationsBetweenForests.Output
              graph.AddEdge(new DataEdge(vlist[11], vlist[12]));
              graph.AddEdge(new DataEdge(vlist[6], vlist[0]));
              graph.AddEdge(new DataEdge(vlist[6], vlist[10]));
-             DataEdge a = new DataEdge(vlist[0], vlist[2]);*/
+             DataEdge a = new DataEdge(vlist[0], vlist[2]);
 
-            //load graph
+           /* //load graph
             OpenFileDialog loadD = new OpenFileDialog() { Filter = "TreeFile | *.xml", Title = "Seleziona il file da aprire"};
             if (loadD.ShowDialog() != true) 
             {
@@ -80,7 +99,7 @@ namespace OperationsBetweenForests.Output
                 {
                     MessageBox.Show(String.Format("Apertura del file fallita.\n"), ex.Message);
                 }
-            }
+            }*/
             //Generate random edges for the vertices
             /*foreach (var item in vlist)
             {
