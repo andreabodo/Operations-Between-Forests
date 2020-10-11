@@ -125,11 +125,13 @@ namespace OperationsBetweenForests.Input
             MyGraphArea area = new MyGraphArea() { LogicCore = logicCore };
             area.GenerateGraph(graph, true);
             //Save graph
-            SaveFileDialog saveD = new SaveFileDialog() { Filter = "TreeFile | *.xml", Title = "Seleziona il nome del file", FileName = "DefaultTree.xml" };
-            if (saveD.ShowDialog() == true)
-            {
-                FileManager.SerializeDataToFile(saveD.FileName, area.ExtractSerializationData());
-            }
+            /* SaveFileDialog saveD = new SaveFileDialog() { Filter = "TreeFile | *.xml", Title = "Seleziona il nome del file", FileName = "DefaultTree.xml" };
+             if (saveD.ShowDialog() == true)
+             {
+                 FileManager.SerializeDataToFile(saveD.FileName, area.ExtractSerializationData());
+             }*/
+
+            FileManager.SaveToJsonFile(graph);
         }
     }
 }

@@ -41,27 +41,8 @@ namespace OperationsBetweenForests.Output
         private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
         {
              Console.WriteLine("Generate graph clicked begin");
-            MyGraph graph = new MyGraph();
+             MyGraph graph = FileManager.DeserializeFromJsonFile();
             //Random Rand = new Random();
-            OpenFileDialog loadD = new OpenFileDialog() { Filter = "TreeFile | *.json", Title = "Seleziona il file da aprire" };
-            if (loadD.ShowDialog() == true)
-            {
-                String jsonString = File.ReadAllText(loadD.FileName);
-                Node myNode = JsonSerializer.Deserialize<Node>(jsonString);
-                Console.WriteLine(myNode.ToString());
-                DataVertex father = new DataVertex() { Text = myNode.value };
-                List<Node> nodeList = myNode.hoSonno();
-                Node nodo;
-                foreach(Node n in nodeList)
-                {
-                    Console.WriteLine(n.value);
-                }
-               /* foreach(Node n in myNode.children)
-                {
-                    graph.AddEdge(new DataEdge(father, new DataVertex() { Text = n.value }));
-                }*/
-                
-            }
 
             //Create data graph object
             
@@ -146,11 +127,10 @@ namespace OperationsBetweenForests.Output
             graphArea.LogicCore = LogicCore;
 
             //Generate graph
-            graphArea.GenerateGraph(true);
-            graphArea.ShowAllEdgesLabels(false);
-            graphArea.ShowAllEdgesArrows(false);
+            graphArea.GenerateGraph(graph, true);
+            graphArea.ShowAllEdgesLabels(true);
+            graphArea.ShowAllEdgesArrows(true);
             graphArea.SetVerticesMathShape(VertexShape.Circle);
-
 
             Console.WriteLine("Generate graph clicked end");
         }
