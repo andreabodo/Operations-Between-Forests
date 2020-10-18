@@ -2,6 +2,7 @@
 using GraphX.Controls;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using GraphX.Logic.Algorithms.OverlapRemoval;
+using OperationsBetweenForests.Core;
 using OperationsBetweenForests.Models;
 using System;
 using System.Collections.Generic;
@@ -25,11 +26,14 @@ namespace OperationsBetweenForests
     /// </summary>
     public partial class MainWindow : Window
     {
+        
+        private List<Forest> Forests;
+
         public MainWindow()
         {
             InitializeComponent();
             ZoomControl.SetViewFinderVisibility(zoomCtrl, Visibility.Visible);
-            var dataGraph = new MyGraph();
+            /*var dataGraph = new MyGraph();
             //Now we need to create edges and vertices to fill data graph
             //This edges and vertices will represent graph structure and connections
             //Lets make some vertices
@@ -88,7 +92,7 @@ namespace OperationsBetweenForests
             GraphArea.SetEdgesDashStyle(EdgeDashStyle.Dash);
             GraphArea.ShowAllEdgesArrows(true);
             GraphArea.ShowAllEdgesLabels(true);
-            zoomCtrl.ZoomToFill();
+            zoomCtrl.ZoomToFill();*/
         }
     }
 }

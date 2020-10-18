@@ -8,5 +8,8 @@ namespace OperationsBetweenForests.Core
 {
     class Forest
     {
+
+        private String name;
+        private List<Tree> trees;
     }
 }

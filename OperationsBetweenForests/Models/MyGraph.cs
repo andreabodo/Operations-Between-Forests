@@ -24,5 +24,23 @@ namespace OperationsBetweenForests.Models
         {
             Name = name;
         }
+
+        public override string ToString()
+        {
+            var vertices = this.Vertices;
+            String s = this.Name + ":" + "\n";
+            s += "Vertices: \n";
+            foreach(var v in vertices)
+            {
+                s += v.ID + "\n";
+            }
+            s += "Edges: \n";
+            var edges = this.Edges;
+            foreach (var e in edges)
+            {
+                s += e.ID + "\n";
+            }
+            return s;
+        }
     }
 }

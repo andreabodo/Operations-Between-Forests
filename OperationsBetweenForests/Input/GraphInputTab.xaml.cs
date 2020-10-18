@@ -39,7 +39,7 @@ namespace OperationsBetweenForests.Input
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            //Creazione text box
+            //Creazione text boxes
             TextBox txt1 = new TextBox();
             txt1.Text = "Nodo";
             txt1.Name = "NodeTextBox" + (Index);
@@ -72,7 +72,7 @@ namespace OperationsBetweenForests.Input
         }
 
         /// <summary>
-        /// Generate graph and dot file from input form. Add the new graph to graph list in main class.
+        /// Generates graph and save it in a JSON file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -80,13 +80,13 @@ namespace OperationsBetweenForests.Input
         {
             //ListView to Dictionary
             MyGraph graph = new MyGraph(GraphNameTextBox.Text.Trim());
-            ItemCollection itemList = InputListView.Items;
+            ItemCollection itemList = InputListView.Items; //prendo gli oggetti textbox contenuti nella listview
             Dictionary<String, String[]> graphDictionary = new Dictionary<string, string[]>();
             foreach (var element in itemList)
             {
                 if (element.GetType() == typeof(Grid))
                 {
-                    Grid currentElement = (Grid)element;
+                    Grid currentElement = (Grid)element; //se è una grid allora contiene le due text box padre e figli
                     UIElementCollection gridChildrenList = currentElement.Children;
                     if (gridChildrenList.Count == 2)
                     {
@@ -102,9 +102,9 @@ namespace OperationsBetweenForests.Input
                             MessageBox.Show("Il grafo contiene due nodi con lo stesso nome nel campo \"padre\"", "Errore");
                         }
                     }
-
+                }
+            }
                     //Graph creation: key node - values[] children nodes
-                    //DotGraph graph = new DotGraph(GraphNameTextBox.Text.Trim
                     foreach (String key in graphDictionary.Keys)
                     {
                         DataVertex node = new DataVertex(key);
@@ -118,8 +118,6 @@ namespace OperationsBetweenForests.Input
                             graph.AddEdge(edge);
                         }
                     }
-                }
-            }
             //Generate area to use data in serialization
             MyGXLogicCore logicCore = LogicCoreTreeProvider.DefaultTreeLogicCore(graph);
             MyGraphArea area = new MyGraphArea() { LogicCore = logicCore };

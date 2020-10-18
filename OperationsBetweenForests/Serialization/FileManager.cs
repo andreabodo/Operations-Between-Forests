@@ -94,12 +94,16 @@ namespace OperationsBetweenForests.Serialization
         }
         #endregion
 
-        public static MyGraph DeserializeFromJsonFile()
+        /// <summary>
+        /// Carica l'oggetto Node dal file json selezionato
+        /// </summary>
+        /// <returns></returns>
+        public static Node DeserializeFromJsonFile()
         {
             OpenFileDialog dialog = new OpenFileDialog { Title = "Scegli il file che vuoi aprire", Filter = "TreeFile | *.JSON" };
             if(dialog.ShowDialog() == true)
             {
-                return JsonSerializer.Deserialize<MyGraph>(File.ReadAllText(dialog.FileName));
+                return JsonSerializer.Deserialize<Node>(File.ReadAllText(dialog.FileName));
             }
             else
             {
