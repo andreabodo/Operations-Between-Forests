@@ -103,7 +103,6 @@ namespace OperationsBetweenForests.Input
                         }
                     }
                 }
-            }
                     //Graph creation: key node - values[] children nodes
                     foreach (String key in graphDictionary.Keys)
                     {
@@ -118,6 +117,7 @@ namespace OperationsBetweenForests.Input
                             graph.AddEdge(edge);
                         }
                     }
+            }
             //Generate area to use data in serialization
             MyGXLogicCore logicCore = LogicCoreTreeProvider.DefaultTreeLogicCore(graph);
             MyGraphArea area = new MyGraphArea() { LogicCore = logicCore };

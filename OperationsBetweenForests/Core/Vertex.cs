@@ -14,5 +14,12 @@ namespace OperationsBetweenForests.Core
         private int level;
         private String value;
         private List<Vertex> children;
+
+        public Vertex(String value, Node father = null)
+        {
+            this.value = value;
+            this.father = father;
+        }
+
     }
 }

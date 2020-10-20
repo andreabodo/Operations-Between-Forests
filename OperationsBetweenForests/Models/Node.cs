@@ -8,7 +8,7 @@ namespace OperationsBetweenForests.Models
 {
     public class Node
     {
-       public String padre { get; set; }
+       public String father { get; set; }
        public String value { get; set; }
        public List<Node> children { get; set; }
 

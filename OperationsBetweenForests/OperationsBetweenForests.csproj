@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\ForestCalculator.cs" />
     <Compile Include="LogicCoreTreeProvider.cs" />
     <Compile Include="Models\Node.cs" />
     <Compile Include="Serialization\FileManager.cs" />

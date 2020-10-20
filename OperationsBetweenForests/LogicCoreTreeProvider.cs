@@ -15,7 +15,7 @@ namespace OperationsBetweenForests
 
         public static MyGXLogicCore DefaultTreeLogicCore(MyGraph graph)
         {
-            var logicCore = new MyGXLogicCore(graph); //   C'ERANO PROBLEMI PERCHè IL LOGIC CORE COME NELLA DOC NON PRENDEVA IL GRAFO!!!
+            var logicCore = new MyGXLogicCore(graph); //Attenzione: la doc non dice di dover agganciare il grafo al logic core!
             //This property sets layout algorithm that will be used to calculate vertices positions
             //Different algorithms uses different values and some of them uses edge Weight property.
             logicCore.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.Tree;
