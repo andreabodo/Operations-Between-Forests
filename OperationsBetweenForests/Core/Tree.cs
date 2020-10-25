@@ -12,6 +12,11 @@ namespace OperationsBetweenForests.Core
 
         private String name;
         private Node root;
+        private Dictionary<Node, List<Node>> structure;
 
+        public bool IsSingleNode()
+        {
+            return root.children.Count == 0;
+        }
     }
 }

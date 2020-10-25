@@ -15,7 +15,14 @@ namespace OperationsBetweenForests.Core
 
         internal bool IsSingleNode()
         {
-            throw new NotImplementedException();
+            if(trees.Count==1)
+            {
+                return trees.First().IsSingleNode();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal Forest RemoveRoot()
