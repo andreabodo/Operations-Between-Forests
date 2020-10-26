@@ -105,7 +105,6 @@
     </ApplicationDefinition>
     <Compile Include="Core\ForestCalculator.cs" />
     <Compile Include="LogicCoreTreeProvider.cs" />
-    <Compile Include="Models\Node.cs" />
     <Compile Include="Serialization\FileManager.cs" />
     <Compile Include="Serialization\YAXPointerSerializer.cs" />
     <Page Include="Input\GraphInputTab.xaml">
@@ -123,7 +122,7 @@
     <Compile Include="Core\Edge.cs" />
     <Compile Include="Core\Forest.cs" />
     <Compile Include="Core\Tree.cs" />
-    <Compile Include="Core\Vertex.cs" />
+    <Compile Include="Core\Node.cs" />
     <Compile Include="Input\GraphInputTab.xaml.cs">
       <DependentUpon>GraphInputTab.xaml</DependentUpon>
     </Compile>

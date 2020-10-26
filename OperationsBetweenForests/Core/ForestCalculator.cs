@@ -16,7 +16,7 @@ namespace OperationsBetweenForests.Core
             if (a.IsSingleNode()) { return b; }
             //b neutro
             else if (b.IsSingleNode()) { return a; }
-            else if (a.IsSingleTree())
+            else if (a.IsSingleTree() && b.IsSingleTree())
             {
                return ProductRec(a.RemoveRoot(), b) + ProductRec(a.RemoveRoot(), b.RemoveRoot()) + ProductRec(a, b.RemoveRoot());
             }
@@ -24,8 +24,9 @@ namespace OperationsBetweenForests.Core
             {
                 Forest result = new Forest();
                 foreach (Forest f in a.SubForest()){
-                    result = result + ProductRec(f, b);
+                    result += ProductRec(f, b);
                 }
+                return result;
             }
         }
 

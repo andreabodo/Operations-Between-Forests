@@ -13,6 +13,15 @@ namespace OperationsBetweenForests.Core
         private String name { get; set; }
         private List<Tree> trees { get; set; }
 
+
+        public Forest(params Tree[] trees)
+        {
+            foreach(Tree t in trees)
+            {
+                this.trees.Add(t);
+            }
+        }
+
         internal bool IsSingleNode()
         {
             if(trees.Count==1)
@@ -27,12 +36,16 @@ namespace OperationsBetweenForests.Core
 
         internal Forest RemoveRoot()
         {
-            throw new NotImplementedException();
+            if(trees.Count == 1)
+            {
+                trees = trees.First().RemoveRoot();
+            }
+            return this;
         }
 
         internal bool IsSingleTree()
         {
-            throw new NotImplementedException();
+            return trees.Count == 1;
         }
 
         internal Node[] GetAllRoots()
@@ -40,9 +53,14 @@ namespace OperationsBetweenForests.Core
             throw new NotImplementedException();
         }
 
-        internal Forest SubForest()
+        internal List<Forest> SubForest()
         {
-            throw new NotImplementedException();
+            List<Forest> subForests = new List<Forest>(trees.Count);
+            foreach(Tree t in trees)
+            {
+                subForests.Add(new Forest(t));
+            }
+            return subForests;
         }
 
         internal Forest Add(Forest f2)
