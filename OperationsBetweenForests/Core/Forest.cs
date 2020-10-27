@@ -12,7 +12,9 @@ namespace OperationsBetweenForests.Core
 
         private String name { get; set; }
         private List<Tree> trees { get; set; }
-
+        public List<Node> Roots { get; set; }
+        public Dictionary<string, Node> ForestNodesMap { get; internal set; }
+        public IEnumerable<Edge> EdgeList { get; internal set; }
 
         public Forest(params Tree[] trees)
         {
@@ -49,6 +51,11 @@ namespace OperationsBetweenForests.Core
         }
 
         internal Node[] GetAllRoots()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal int getRootList()
         {
             throw new NotImplementedException();
         }

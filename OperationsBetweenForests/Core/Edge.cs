@@ -10,8 +10,8 @@ namespace OperationsBetweenForests.Core
     class Edge
     {
 
-        private Node source;
-        private Node target;
+        public Node Father { get; set; }
+        public Node Child { get; set; }
 
     }
 }
