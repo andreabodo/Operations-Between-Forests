@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OperationsBetweenForests.Core
 {
-    class Node
+    public class Node
     {
         private bool isRoot;
         private Node parent;

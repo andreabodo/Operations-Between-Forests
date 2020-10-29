@@ -131,5 +131,11 @@ namespace OperationsBetweenForests.Input
 
             FileManager.SaveToJsonFile(graph);
         }
+
+        private void GetInput(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

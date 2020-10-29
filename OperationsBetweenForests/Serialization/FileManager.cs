@@ -9,6 +9,7 @@ using YAXLib;
 using System.Text.Json;
 using Microsoft.Win32;
 using OperationsBetweenForests.Models;
+using OperationsBetweenForests.Core;
 
 namespace OperationsBetweenForests.Serialization
 {
