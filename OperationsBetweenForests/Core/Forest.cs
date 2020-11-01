@@ -7,28 +7,48 @@ using System.Threading.Tasks;
 
 namespace OperationsBetweenForests.Core
 {
-    class Forest
+    public class Forest
     {
 
-        private String name { get; set; }
-        private List<Tree> trees { get; set; }
-        public List<Node> Roots { get; set; }
-        public Dictionary<string, Node> ForestNodesMap { get; internal set; }
-        public IEnumerable<Edge> EdgeList { get; internal set; }
+        public String Name { get; set; }
+        public List<Node> Roots { get; set; }//radici
+        public Dictionary<string, Node> ForestNodesMap { get; set; }
+        public List<Edge> EdgeList { get; set; }
 
-        public Forest(params Tree[] trees)
+        public Forest()
         {
-            foreach(Tree t in trees)
+            Roots = new List<Node>();
+            ForestNodesMap = new Dictionary<String, Node>();
+            EdgeList = new List<Edge>();
+        }
+
+        public Forest(List<Node> roots) : this() 
+        {
+            Roots = roots;
+        }
+        
+
+        public Forest(params Node[] node) : this()
+        {
+            foreach(Node n in node)
             {
-                this.trees.Add(t);
+                Roots.Add(n);
             }
         }
 
         internal bool IsSingleNode()
         {
-            if(trees.Count==1)
+            if(Roots.Count == 1)
             {
-                return trees.First().IsSingleNode();
+                Node n = Roots.First();
+                if(n.Children.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -36,18 +56,9 @@ namespace OperationsBetweenForests.Core
             }
         }
 
-        internal Forest RemoveRoot()
-        {
-            if(trees.Count == 1)
-            {
-                trees = trees.First().RemoveRoot();
-            }
-            return this;
-        }
-
         internal bool IsSingleTree()
         {
-            return trees.Count == 1;
+            return Roots.Count == 1;
         }
 
         internal Node[] GetAllRoots()
@@ -55,7 +66,7 @@ namespace OperationsBetweenForests.Core
             throw new NotImplementedException();
         }
 
-        internal int getRootList()
+        internal List<Node> getRootList()
         {
             throw new NotImplementedException();
         }

@@ -27,12 +27,13 @@ namespace OperationsBetweenForests
     public partial class MainWindow : Window
     {
         
-        private List<Forest> Forests;
+        public static Dictionary<String, Forest> Forests { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             ZoomControl.SetViewFinderVisibility(zoomCtrl, Visibility.Visible);
+            Forests = new List<Forest>();
             /*var dataGraph = new MyGraph();
             //Now we need to create edges and vertices to fill data graph
             //This edges and vertices will represent graph structure and connections

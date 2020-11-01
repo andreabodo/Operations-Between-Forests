@@ -124,7 +124,6 @@
     </Compile>
     <Compile Include="Core\Edge.cs" />
     <Compile Include="Core\Forest.cs" />
-    <Compile Include="Core\Tree.cs" />
     <Compile Include="Core\Node.cs" />
     <Compile Include="Input\GraphInputTab.xaml.cs">
       <DependentUpon>GraphInputTab.xaml</DependentUpon>
@@ -172,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Calculation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
