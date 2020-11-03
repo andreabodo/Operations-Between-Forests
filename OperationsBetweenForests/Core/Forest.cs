@@ -14,6 +14,7 @@ namespace OperationsBetweenForests.Core
         public List<Node> Roots { get; set; }//radici
         public Dictionary<string, Node> ForestNodesMap { get; set; }
         public List<Edge> EdgeList { get; set; }
+        public int NodeCount { get; set; }
 
         public Forest()
         {
@@ -25,6 +26,11 @@ namespace OperationsBetweenForests.Core
         public Forest(List<Node> roots) : this() 
         {
             Roots = roots;
+        }
+
+        public Forest(HashSet<Edge> edges) : this()
+        {
+            EdgeList = edges.ToList();
         }
         
 
@@ -73,8 +79,8 @@ namespace OperationsBetweenForests.Core
 
         internal List<Forest> SubForest()
         {
-            List<Forest> subForests = new List<Forest>(trees.Count);
-            foreach(Tree t in trees)
+            List<Forest> subForests = new List<Forest>(Roots.Count);
+            foreach(Node t in Roots)
             {
                 subForests.Add(new Forest(t));
             }

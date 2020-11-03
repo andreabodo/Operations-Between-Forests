@@ -25,6 +25,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
 using OperationsBetweenForests.Input;
+using OperationsBetweenForests.Core;
 
 namespace OperationsBetweenForests.Output
 {
@@ -168,10 +169,40 @@ namespace OperationsBetweenForests.Output
             return graph;
         }
 
-        //TODO test
-        public void testMethod(object sender, RoutedEventArgs e)
+        private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadGraph(DemoGraph());
+            if (MainWindow.Forests.Count > 0)
+            {
+                Forest f = MainWindow.Forests.First().Value;
+                MyGraph graph = new MyGraph();
+                Dictionary<String, DataVertex> existingNodes = new Dictionary<String, DataVertex>(); //struttura dati di appoggio per evitare i nodi duplicati
+                foreach(Edge sourceEdge in f.EdgeList)
+                {
+                    if (!(existingNodes.ContainsKey(sourceEdge.Father.Value)))
+                    {
+                        DataVertex fath = new DataVertex(sourceEdge.Father.Value);
+                        graph.AddVertex(fath);
+                        if (!(existingNodes.ContainsKey(sourceEdge.Child.Value)))
+                        {
+                            DataVertex chil = new DataVertex(sourceEdge.Child.Value);
+                            graph.AddVertex(chil);
+                            graph.AddEdge(new DataEdge(fath, chil));
+                        }
+                        else
+                        {
+                            DataVertex chil = new DataVertex();
+                            existingNodes.TryGetValue(sourceEdge.Father.Value, out chil);
+                            graph.AddVertex(chil);
+                            graph.AddEdge(new DataEdge(fath, chil));
+                        }
+                    }
+                    else
+                    {
+                        //padre già esistente
+                    }
+                }
+                LoadGraph(graph);
+            }
         }
     }
 }

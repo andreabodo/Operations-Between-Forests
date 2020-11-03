@@ -30,5 +30,17 @@ namespace OperationsBetweenForests.Core
         {
             parent = null;
         }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is Node)
+            {
+                return this.Value.Equals(((Node)obj).Value);
+            }
+            else
+            {
+                return base.Equals(obj);
+            }
+        }
     }
 }

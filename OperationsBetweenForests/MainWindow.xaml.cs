@@ -33,7 +33,7 @@ namespace OperationsBetweenForests
         {
             InitializeComponent();
             ZoomControl.SetViewFinderVisibility(zoomCtrl, Visibility.Visible);
-            Forests = new List<Forest>();
+            Forests = new Dictionary<string, Forest>();
             /*var dataGraph = new MyGraph();
             //Now we need to create edges and vertices to fill data graph
             //This edges and vertices will represent graph structure and connections

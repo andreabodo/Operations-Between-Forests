@@ -104,111 +104,115 @@ namespace OperationsBetweenForests.Input
                         }
                     }
                 }
-                //TODO costruire la struttura dati del modello partendo dal dizionario appena creato
-                List<Node> existingNodes = new List<Node>();//lista di supporto alla creazione
-                Forest result = new Forest();
-                foreach (String a in graphDictionary.Keys)
-                {
-                    Node father = new Node(a);
-                    if (!(existingNodes.Contains(father)))
-                    {
-                        existingNodes.Add(father);
-                        result.ForestNodesMap.Add(a, father);
-                        graphDictionary.TryGetValue(a, out string[] children);
-                        foreach (String b in children)
-                        {
-                            Node child = new Node(b);
-                            if (!(existingNodes.Contains(child)))
-                            {
-                                //TODO se il nodo è già creato lo recupero, altrimenti lo creo
-                                existingNodes.Add(child);
-                                result.ForestNodesMap.Add(b, child);
-                                result.EdgeList.Add(new Edge(father, child));
-                            }
-                            else
-                            {
-                                result.EdgeList.Add(new Edge(father, existingNodes[existingNodes.IndexOf(child)]));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        graphDictionary.TryGetValue(a, out string[] children);
-                        foreach (String b in children)
-                        {
-                            Node child = new Node(b);
-                            if (!(existingNodes.Contains(child)))
-                            {
-                                existingNodes.Add(child);
-                                result.ForestNodesMap.Add(b, child);
-                                result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], child));
-                            }
-                            else
-                            {
-                                result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], existingNodes[existingNodes.IndexOf(child)]));
-                            }
-                        }
-                    }
-                }
-                result.Name = GraphNameTextBox.Text;
-                OperationsBetweenForests.MainWindow.Forests.Add(result.Name, result);
             }
-            #endregion
-
-                #region old logic
-                //ListView to Dictionary
-                /*   MyGraph graph = new MyGraph(GraphNameTextBox.Text.Trim());
-               ItemCollection itemList = InputListView.Items; //prendo gli oggetti textbox contenuti nella listview
-               Dictionary<String, String[]> graphDictionary = new Dictionary<string, string[]>();
-               foreach (var element in itemList)
-               {
-                   if (element.GetType() == typeof(Grid))
-                   {
-                       Grid currentElement = (Grid)element; //se è una grid allora contiene le due text box padre e figli
-                       UIElementCollection gridChildrenList = currentElement.Children;
-                       if (gridChildrenList.Count == 2)
-                       {
-                           TextBox node = (TextBox)gridChildrenList[0];
-                           TextBox children = (TextBox)gridChildrenList[1];
-                           String[] childrenArray = children.Text.Split(',');
-                           try
-                           {
-                               graphDictionary.Add(node.Text, childrenArray);
-                           }
-                           catch (ArgumentException)
-                           {
-                               MessageBox.Show("Il grafo contiene due nodi con lo stesso nome nel campo \"padre\"", "Errore");
-                           }
-                       }
-                   }
-                       //Graph creation: key node - values[] children nodes
-                       foreach (String key in graphDictionary.Keys)
-                       {
-                           DataVertex node = new DataVertex(key);
-                           graph.AddVertex(node);
-                           String[] childrens = graphDictionary[key];
-                           foreach (String children in childrens)
-                           {
-                               DataVertex childrenNode = new DataVertex(children);
-                               graph.AddVertex(childrenNode);
-                               DataEdge edge = new DataEdge(node, childrenNode);
-                               graph.AddEdge(edge);
-                           }
-                       }
-               }
-               //Generate area to use data in serialization
-               MyGXLogicCore logicCore = LogicCoreTreeProvider.DefaultTreeLogicCore(graph);
-               MyGraphArea area = new MyGraphArea() { LogicCore = logicCore };
-               area.GenerateGraph(graph, true);
-               //Save graph
-               /* SaveFileDialog saveD = new SaveFileDialog() { Filter = "TreeFile | *.xml", Title = "Seleziona il nome del file", FileName = "DefaultTree.xml" };
-                if (saveD.ShowDialog() == true)
+            //creazione strutture dati per il modello di calcolo
+            List<Node> existingNodes = new List<Node>();//lista di supporto alla creazione se il nodo è già creato lo recupero, altrimenti lo creo
+            Forest result = new Forest();
+            foreach (String a in graphDictionary.Keys)
+            {
+                Node father = new Node(a);
+                if (!(existingNodes.Contains(father)))
                 {
-                    FileManager.SerializeDataToFile(saveD.FileName, area.ExtractSerializationData());
+                    existingNodes.Add(father);
+                    result.ForestNodesMap.Add(a, father);
+                    result.NodeCount += 1;
+                    graphDictionary.TryGetValue(a, out string[] children);
+                    foreach (String b in children)
+                    {
+                        Node child = new Node(b);
+                        if (!(existingNodes.Contains(child)))
+                        {
+                            existingNodes.Add(child);
+                            result.ForestNodesMap.Add(b, child);
+                            result.NodeCount += 1;
+                            result.EdgeList.Add(new Edge(father, child));
+                        }
+                        else
+                        {
+                            result.EdgeList.Add(new Edge(father, existingNodes[existingNodes.IndexOf(child)]));
+                        }
+                    }
                 }
+                else
+                {
+                    graphDictionary.TryGetValue(a, out string[] children);
+                    foreach (String b in children)
+                    {
+                        Node child = new Node(b);
+                        if (!(existingNodes.Contains(child)))
+                        {
+                            existingNodes.Add(child);
+                            result.ForestNodesMap.Add(b, child);
+                            result.NodeCount += 1;
+                            result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], child));
+                        }
+                        else
+                        {
+                            result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], existingNodes[existingNodes.IndexOf(child)]));
+                        }
 
-               FileManager.SaveToJsonFile(graph);*/
-                #endregion
+                    }
+                }
+            }
+            result.Name = GraphNameTextBox.Text;
+            OperationsBetweenForests.MainWindow.Forests.Add(result.Name, result);
+            FileManager.SaveToJsonFile(result);
         }
+        #endregion
+
+        #region old logic
+        //ListView to Dictionary
+        /*   MyGraph graph = new MyGraph(GraphNameTextBox.Text.Trim());
+       ItemCollection itemList = InputListView.Items; //prendo gli oggetti textbox contenuti nella listview
+       Dictionary<String, String[]> graphDictionary = new Dictionary<string, string[]>();
+       foreach (var element in itemList)
+       {
+           if (element.GetType() == typeof(Grid))
+           {
+               Grid currentElement = (Grid)element; //se è una grid allora contiene le due text box padre e figli
+               UIElementCollection gridChildrenList = currentElement.Children;
+               if (gridChildrenList.Count == 2)
+               {
+                   TextBox node = (TextBox)gridChildrenList[0];
+                   TextBox children = (TextBox)gridChildrenList[1];
+                   String[] childrenArray = children.Text.Split(',');
+                   try
+                   {
+                       graphDictionary.Add(node.Text, childrenArray);
+                   }
+                   catch (ArgumentException)
+                   {
+                       MessageBox.Show("Il grafo contiene due nodi con lo stesso nome nel campo \"padre\"", "Errore");
+                   }
+               }
+           }
+               //Graph creation: key node - values[] children nodes
+               foreach (String key in graphDictionary.Keys)
+               {
+                   DataVertex node = new DataVertex(key);
+                   graph.AddVertex(node);
+                   String[] childrens = graphDictionary[key];
+                   foreach (String children in childrens)
+                   {
+                       DataVertex childrenNode = new DataVertex(children);
+                       graph.AddVertex(childrenNode);
+                       DataEdge edge = new DataEdge(node, childrenNode);
+                       graph.AddEdge(edge);
+                   }
+               }
+       }
+       //Generate area to use data in serialization
+       MyGXLogicCore logicCore = LogicCoreTreeProvider.DefaultTreeLogicCore(graph);
+       MyGraphArea area = new MyGraphArea() { LogicCore = logicCore };
+       area.GenerateGraph(graph, true);
+       //Save graph
+       /* SaveFileDialog saveD = new SaveFileDialog() { Filter = "TreeFile | *.xml", Title = "Seleziona il nome del file", FileName = "DefaultTree.xml" };
+        if (saveD.ShowDialog() == true)
+        {
+            FileManager.SerializeDataToFile(saveD.FileName, area.ExtractSerializationData());
+        }
+
+       FileManager.SaveToJsonFile(graph);*/
+        #endregion
     }
 }
