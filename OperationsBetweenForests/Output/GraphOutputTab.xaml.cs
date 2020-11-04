@@ -178,27 +178,42 @@ namespace OperationsBetweenForests.Output
                 Dictionary<String, DataVertex> existingNodes = new Dictionary<String, DataVertex>(); //struttura dati di appoggio per evitare i nodi duplicati
                 foreach(Edge sourceEdge in f.EdgeList)
                 {
-                    if (!(existingNodes.ContainsKey(sourceEdge.Father.Value)))
+                    if (!(existingNodes.ContainsKey(sourceEdge.Father.Value)))//padre non esiste
                     {
                         DataVertex fath = new DataVertex(sourceEdge.Father.Value);
                         graph.AddVertex(fath);
+                        existingNodes.Add(fath.Text, fath);
                         if (!(existingNodes.ContainsKey(sourceEdge.Child.Value)))
                         {
                             DataVertex chil = new DataVertex(sourceEdge.Child.Value);
                             graph.AddVertex(chil);
+                            existingNodes.Add(chil.Text, chil);
                             graph.AddEdge(new DataEdge(fath, chil));
                         }
                         else
                         {
                             DataVertex chil = new DataVertex();
-                            existingNodes.TryGetValue(sourceEdge.Father.Value, out chil);
-                            graph.AddVertex(chil);
+                            existingNodes.TryGetValue(sourceEdge.Child.Value, out chil);
                             graph.AddEdge(new DataEdge(fath, chil));
                         }
                     }
-                    else
+                    else//padre esiste
                     {
-                        //padre già esistente
+                        DataVertex fath = new DataVertex();
+                        existingNodes.TryGetValue(sourceEdge.Father.Value, out fath);
+                        if (!(existingNodes.ContainsKey(sourceEdge.Child.Value)))
+                        {
+                            DataVertex chil = new DataVertex(sourceEdge.Child.Value);
+                            graph.AddVertex(chil);
+                            existingNodes.Add(chil.Text, chil);
+                            graph.AddEdge(new DataEdge(fath, chil));
+                        }
+                        else
+                        {
+                            DataVertex chil = new DataVertex();
+                            existingNodes.TryGetValue(sourceEdge.Child.Value, out chil);
+                            graph.AddEdge(new DataEdge(fath, chil));
+                        }
                     }
                 }
                 LoadGraph(graph);
