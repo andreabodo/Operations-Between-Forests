@@ -8,8 +8,10 @@
         xmlns:models="clr-namespace:OperationsBetweenForests.Models"
         xmlns:output ="clr-namespace:OperationsBetweenForests.Output"
         xmlns:input = "clr-namespace:OperationsBetweenForests.Input"
+        xmlns:calculation ="clr-namespace:OperationsBetweenForests.Calculation"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
     <TabControl x:Name="GeneralTab" Margin="0">
         <TabItem Header="Input">
             <input:GraphInputTab/>
@@ -17,10 +19,8 @@
         <TabItem Header="Output">
             <output:GraphOutputTab/>
         </TabItem>
-        <TabItem Header="Calculator">
-            <controls:ZoomControl x:Name="zoomCtrl" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <models:MyGraphArea x:Name="GraphArea" Margin="0,0,-600,-440" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
-            </controls:ZoomControl>
+        <TabItem Header="Product">
+            <calculation:ProductTab/>
         </TabItem>
     </TabControl>
 </Window>

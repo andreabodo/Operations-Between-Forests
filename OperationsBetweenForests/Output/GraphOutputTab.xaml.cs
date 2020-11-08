@@ -26,6 +26,7 @@ using System.Text.Json.Serialization;
 using System.IO;
 using OperationsBetweenForests.Input;
 using OperationsBetweenForests.Core;
+using QuickGraph.Algorithms;
 
 namespace OperationsBetweenForests.Output
 {
@@ -34,6 +35,7 @@ namespace OperationsBetweenForests.Output
     /// </summary>
     public partial class GraphOutputTab : UserControl
     {
+
         public GraphOutputTab()
         {
             InitializeComponent();
@@ -69,7 +71,7 @@ namespace OperationsBetweenForests.Output
 
             //This property sets edge routing algorithm that is used to build route paths according to algorithm logic.
             //For ex., SimpleER algorithm will try to set edge paths around vertices so no edge will intersect any vertex.
-            LogicCore.DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.SimpleER;
+            LogicCore.DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None;
 
             //This property sets async algorithms computation so methods like: Area.RelayoutGraph() and Area.GenerateGraph()
             //will run async with the UI thread. Completion of the specified methods can be catched by corresponding events:
@@ -84,62 +86,12 @@ namespace OperationsBetweenForests.Output
             graphArea.ShowAllEdgesLabels(false);
             graphArea.ShowAllEdgesArrows(false);
             graphArea.SetVerticesMathShape(VertexShape.Circle);
+            NameLabel.Content = graph.Name;
+            NodesLabel.Content = graph.VertexCount;
+            EdgesLabel.Content = graph.EdgeCount;
         }
 
-        //TODO caricare l'albero struttura dati e creare l'albero visualizzazione
-        /*private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("Generate graph clicked begin");
-            MyGraph graph = FileManager.DeserializeFromJsonFile();
-            Console.WriteLine(graph.ToString());
-            Console.WriteLine("Vertici?" + graph.Vertices.Count());
-            var LogicCore = new MyGXLogicCore(); //   C'ERANO PROBLEMI PERCHè IL LOGIC CORE COME NELLA DOC NON PRENDEVA IL GRAFO!!!
-            //TODO capire come visualizzare il grafo da loading anzichè da creazione via codice. Il problema sembra essere sempre il fatto che
-            //il logic core richiede un grafo
-            LogicCore.Graph = graph;//TODO provare altrimenti a ricostruire il grafo ogni volta che viene caricato prendendo le strutture da quelle
-            //caricate in graphArea
-
-            //This property sets layout algorithm that will be used to calculate vertices positions
-            //Different algorithms uses different values and some of them uses edge Weight property.
-            LogicCore.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.Tree;
-            //Now we can set optional parameters using AlgorithmFactory
-            //NOTE: default parameters can be automatically created each time you change Default algorithms
-            LogicCore.DefaultLayoutAlgorithmParams =
-                               LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.Tree);
-            //Unfortunately to change algo parameters you need to specify params type which is different for every algorithm.
-            ((SimpleTreeLayoutParameters)LogicCore.DefaultLayoutAlgorithmParams).Direction = LayoutDirection.TopToBottom;
-
-            //This property sets vertex overlap removal algorithm.
-            //Such algorithms help to arrange vertices in the layout so no one overlaps each other.
-            LogicCore.DefaultOverlapRemovalAlgorithm = OverlapRemovalAlgorithmTypeEnum.FSA;
-            //Setup optional params
-            LogicCore.DefaultOverlapRemovalAlgorithmParams =
-                              LogicCore.AlgorithmFactory.CreateOverlapRemovalParameters(OverlapRemovalAlgorithmTypeEnum.FSA);
-            ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).HorizontalGap = 50;
-            ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 300;
-
-            //This property sets edge routing algorithm that is used to build route paths according to algorithm logic.
-            //For ex., SimpleER algorithm will try to set edge paths around vertices so no edge will intersect any vertex.
-            LogicCore.DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.SimpleER;
-
-            //This property sets async algorithms computation so methods like: Area.RelayoutGraph() and Area.GenerateGraph()
-            //will run async with the UI thread. Completion of the specified methods can be catched by corresponding events:
-            //Area.RelayoutFinished and Area.GenerateGraphFinished.
-            LogicCore.AsyncAlgorithmCompute = false;
-
-            //Finally assign logic core to GraphArea object
-            graphArea.LogicCore = LogicCore;
-
-            //Generate graph
-            graphArea.GenerateGraph(true);
-            graphArea.ShowAllEdgesLabels(true);
-            graphArea.ShowAllEdgesArrows(true);
-            graphArea.SetVerticesMathShape(VertexShape.Circle);
-
-            Console.WriteLine("Generate graph clicked end");
-        }*/
-
-        //TODO test
+        //TODO test graph
         public MyGraph DemoGraph()
         {
             //Random Rand = new Random();
@@ -169,12 +121,19 @@ namespace OperationsBetweenForests.Output
             return graph;
         }
 
+
+        /// <summary>
+        /// Converts and show underlying data structures into GraphX ones
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.Forests.Count > 0)
             {
-                Forest f = MainWindow.Forests.First().Value;
-                MyGraph graph = new MyGraph();
+                String selected = GraphList.SelectedItem.ToString();//estrazione foresta da foreste in memoria
+                MainWindow.Forests.TryGetValue(selected, out Forest f);
+                MyGraph graph = new MyGraph() {Name = selected};
                 Dictionary<String, DataVertex> existingNodes = new Dictionary<String, DataVertex>(); //struttura dati di appoggio per evitare i nodi duplicati
                 foreach(Edge sourceEdge in f.EdgeList)
                 {
@@ -218,6 +177,18 @@ namespace OperationsBetweenForests.Output
                 }
                 LoadGraph(graph);
             }
+        }
+
+        private void ReloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.GraphList.ItemsSource = MainWindow.Forests.Keys;
+        }
+
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            Forest f = (Forest) FileManager.DeserializeFromJsonFile();
+            MainWindow.Forests.Add(f.Name, f);
+            ReloadButton_Click(this, new RoutedEventArgs(MouseUpEvent));
         }
     }
 }

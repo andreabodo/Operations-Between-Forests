@@ -9,7 +9,7 @@ namespace OperationsBetweenForests.Core
 {
     public class Node
     {
-        private Node parent;
+        public Node Parent { get; set; }
         public String Value { get; set; }
         public List<Node> Children { get; set; }
 
@@ -22,13 +22,13 @@ namespace OperationsBetweenForests.Core
         public Node(String value, Node parent = null)
         {
             this.Value = value;
-            this.parent = parent;
+            this.Parent = parent;
             Children = new List<Node>();
         }
 
         internal void RemoveParent()
         {
-            parent = null;
+            Parent = null;
         }
 
         public override bool Equals(object obj)

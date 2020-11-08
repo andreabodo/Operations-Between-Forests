@@ -53,7 +53,7 @@ namespace OperationsBetweenForests.Core
             {
                 //get list of trees
                 List<Forest> treeList = new List<Forest>();
-                foreach(Node root in f.getRootList())
+                foreach(Node root in f.Roots)
                 {
                     Forest tree = new Forest(root);
                     treeList.Add(tree);
@@ -79,7 +79,7 @@ namespace OperationsBetweenForests.Core
             {
                 //get list of trees
                 List<Forest> treeList = new List<Forest>();
-                foreach(Node root in g.getRootList())
+                foreach(Node root in g.Roots)
                 {
                     Forest tree = new Forest(root);
                     treeList.Add(tree);

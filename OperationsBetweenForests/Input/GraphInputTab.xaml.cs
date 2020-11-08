@@ -107,7 +107,7 @@ namespace OperationsBetweenForests.Input
             }
             //creazione strutture dati per il modello di calcolo
             List<Node> existingNodes = new List<Node>();//lista di supporto alla creazione se il nodo è già creato lo recupero, altrimenti lo creo
-            Forest result = new Forest();
+            Forest result = new Forest();//TODO assegnare valori anche alla proprietà Root!!!
             foreach (String a in graphDictionary.Keys)
             {
                 Node father = new Node(a);
@@ -123,6 +123,7 @@ namespace OperationsBetweenForests.Input
                         if (!(existingNodes.Contains(child)))
                         {
                             existingNodes.Add(child);
+                            child.Parent = father;
                             result.ForestNodesMap.Add(b, child);
                             result.NodeCount += 1;
                             result.EdgeList.Add(new Edge(father, child));
@@ -144,6 +145,7 @@ namespace OperationsBetweenForests.Input
                             existingNodes.Add(child);
                             result.ForestNodesMap.Add(b, child);
                             result.NodeCount += 1;
+                            child.Parent = father;
                             result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], child));
                         }
                         else
@@ -154,11 +156,25 @@ namespace OperationsBetweenForests.Input
                     }
                 }
             }
+            result.Roots = FindRoots(result);
             result.Name = GraphNameTextBox.Text;
             OperationsBetweenForests.MainWindow.Forests.Add(result.Name, result);
             FileManager.SaveToJsonFile(result);
         }
         #endregion
+
+        private List<Node> FindRoots(Forest f)
+        {
+            List<Node> roots = new List<Node>(1);
+            foreach(Node n in f.ForestNodesMap.Values)
+            {
+                if(n.Parent is null)
+                {
+                    roots.Add(n);
+                }
+            }
+            return roots;
+        }
 
         #region old logic
         //ListView to Dictionary

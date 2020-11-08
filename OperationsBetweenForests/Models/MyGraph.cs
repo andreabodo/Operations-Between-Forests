@@ -13,7 +13,7 @@ namespace OperationsBetweenForests.Models
     {
 
         //TODO My extension
-        private String Name { get; set; }
+        public String Name { get; set; }
 
         public MyGraph() : base()
         {

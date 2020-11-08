@@ -67,16 +67,6 @@ namespace OperationsBetweenForests.Core
             return Roots.Count == 1;
         }
 
-        internal Node[] GetAllRoots()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal List<Node> getRootList()
-        {
-            throw new NotImplementedException();
-        }
-
         internal List<Forest> SubForest()
         {
             List<Forest> subForests = new List<Forest>(Roots.Count);

@@ -99,12 +99,12 @@ namespace OperationsBetweenForests.Serialization
         /// Carica l'oggetto Node dal file json selezionato
         /// </summary>
         /// <returns></returns>
-        public static Node DeserializeFromJsonFile()
+        public static object DeserializeFromJsonFile()
         {
             OpenFileDialog dialog = new OpenFileDialog { Title = "Scegli il file che vuoi aprire", Filter = "TreeFile | *.JSON" };
             if(dialog.ShowDialog() == true)
             {
-                return JsonSerializer.Deserialize<Node>(File.ReadAllText(dialog.FileName));
+                return JsonSerializer.Deserialize<Forest>(File.ReadAllText(dialog.FileName));
             }
             else
             {
