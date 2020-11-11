@@ -142,6 +142,27 @@ namespace OperationsBetweenForests.Core
             return output;
         }
 
+        /*
+        /// <summary>
+        /// Add a common root
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        private static Forest Bottom2(Forest f)
+        {
+            Node root = f.Roots.First();
+            //update edge list
+            List<Edge> edgeList = new List<Edge>();
+            foreach(Node oldRoot in f.Roots)
+            {
+                //set new node as parent
+                oldRoot.Parent = root;
+                //add child to new root
+                root.Children.Add(oldRoot);
+                Edge e = new Edge(root, oldRoot);
+            }
+        }*/
+
         private static Forest Bottomless(Forest f)
         {
             Node n = f.Roots.First();

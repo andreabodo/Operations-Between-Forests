@@ -58,7 +58,7 @@ namespace OperationsBetweenForests.Output
             LogicCore.DefaultLayoutAlgorithmParams =
                                LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.Tree);
             //Unfortunately to change algo parameters you need to specify params type which is different for every algorithm.
-            ((SimpleTreeLayoutParameters)LogicCore.DefaultLayoutAlgorithmParams).Direction = LayoutDirection.TopToBottom;
+            ((SimpleTreeLayoutParameters)LogicCore.DefaultLayoutAlgorithmParams).Direction = LayoutDirection.BottomToTop;
 
             //This property sets vertex overlap removal algorithm.
             //Such algorithms help to arrange vertices in the layout so no one overlaps each other.
@@ -187,8 +187,11 @@ namespace OperationsBetweenForests.Output
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             Forest f = (Forest) FileManager.DeserializeFromJsonFile();
-            MainWindow.Forests.Add(f.Name, f);
-            ReloadButton_Click(this, new RoutedEventArgs(MouseUpEvent));
+            if(!(f is null))//se l'utente decide di annullare il caricamento
+            {
+                MainWindow.Forests.Add(f.Name, f);
+                ReloadButton_Click(this, new RoutedEventArgs(MouseUpEvent));
+            }
         }
     }
 }
