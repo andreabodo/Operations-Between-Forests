@@ -16,6 +16,7 @@ namespace OperationsBetweenForests.Serialization
     public static class FileManager
     {
         #region Old method
+        [Obsolete]
         /// <summary>
         /// Serializes data classes list to file
         /// </summary>
@@ -28,7 +29,7 @@ namespace OperationsBetweenForests.Serialization
                 SerializeDataToStream(stream, modelsList);
             }
         }
-
+        [Obsolete]
         /// <summary>
         /// Deserializes data classes list from file
         /// </summary>
@@ -40,7 +41,7 @@ namespace OperationsBetweenForests.Serialization
                 return DeserializeDataFromStream(stream);
             }
         }
-
+        [Obsolete]
         /// <summary>
         /// Serializes graph data list to a stream
         /// </summary>
@@ -55,7 +56,7 @@ namespace OperationsBetweenForests.Serialization
                 textWriter.Flush();
             }
         }
-
+        [Obsolete]
         /// <summary>
         /// Deserializes graph data from a stream
         /// </summary>
@@ -71,7 +72,7 @@ namespace OperationsBetweenForests.Serialization
         }
         #endregion
 
-        #region Serialization to json
+        #region Serialization/deserialization to/from json
         /// <summary>
         /// Prende in input un oggetto e ne restituisce la stringa in formato JSON
         /// </summary>
@@ -93,7 +94,6 @@ namespace OperationsBetweenForests.Serialization
                 SerializeToJsonFile(o, dialog.FileName);
             }
         }
-        #endregion
 
         /// <summary>
         /// Carica l'oggetto Node dal file json selezionato
@@ -102,7 +102,7 @@ namespace OperationsBetweenForests.Serialization
         public static object DeserializeFromJsonFile()
         {
             OpenFileDialog dialog = new OpenFileDialog { Title = "Scegli il file che vuoi aprire", Filter = "TreeFile | *.JSON" };
-            if(dialog.ShowDialog() == true)
+            if (dialog.ShowDialog() == true)
             {
                 return JsonSerializer.Deserialize<Forest>(File.ReadAllText(dialog.FileName));
             }
@@ -111,5 +111,20 @@ namespace OperationsBetweenForests.Serialization
                 return null;
             }
         }
+        #endregion
+
+        #region DOTFile Management
+        public static void SaveDotFile(String fileName, String DOTContent)
+        {
+            /*
+            if(File.Exists(@"DOTGraphs/" + fileName + ".dot"))
+            {
+
+            }*/
+            File.WriteAllText(@"DOTGraphs/" + fileName + ".dot", DOTContent);
+        }
+        #endregion
+
+
     }
 }

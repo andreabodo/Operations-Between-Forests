@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,9 +34,11 @@ namespace OperationsBetweenForests.Core
             }
         }*/
 
+        //Tra parentesi le scelte del codice originale
+
         public static Forest Product(Forest f, Forest g)
         {
-            Forest resultForest;
+            Forest resultForest = new Forest() { Name = f.Name + "," + g.Name };//TODO inizializzare? (no)
             if (g.IsSingleNode())
             {
                 //substitute label with new ones
@@ -127,6 +130,15 @@ namespace OperationsBetweenForests.Core
             return resultForest;
         }
 
+       /* public static Forest Product2(Forest f, Forest g)
+        {
+            List<Node> firstInputRootsList = new List<Node>(f.Roots);
+            Forest firstInputForest = new Forest(firstInputRootsList);
+            List<Node> secondInputRootsList = new List<Node>(g.Roots);
+            //Forest secondInputForest
+
+        }*/
+
         private static Forest Bottom(Forest output, string rootLabel)
         {
             Node n = new Node(rootLabel);
@@ -180,20 +192,76 @@ namespace OperationsBetweenForests.Core
             return f;
         }
 
-        private static Forest Sum(Forest result, Forest forest)
+        private static Forest Sum(Forest f, Forest g)
         {
-            result.Roots.AddRange(forest.Roots);
-            result.EdgeList.AddRange(forest.EdgeList);
-            foreach(String s in forest.ForestNodesMap.Keys)
+            Forest output = new Forest(f.Roots);
+            Forest secondForest = new Forest(g.Roots);
+            foreach(Node node in secondForest.ForestNodesMap.Values)
             {
-                Node value;
-                bool find = forest.ForestNodesMap.TryGetValue(s, out value);
-                if (find)
+                String validData = GetValidData(node.Value, output.ForestNodesMap);
+
+                //add node to the ForestNodesMap
+                if (validData.CompareTo(node.Value) != 0)
                 {
-                    result.ForestNodesMap.Add(s, value);
+                    //check the presence of a node with same data in second forest
+                    validData = GetValidData(validData, secondForest.ForestNodesMap);
+                    String oldData = node.Value;
+                    //update g root list
+                    if(node.Parent is null)
+                    {
+                        foreach(Node root in secondForest.Roots)
+                        {
+                            if (root.Value.CompareTo(oldData) == 0)
+                            {
+                                root.Value = validData;
+                            }
+                        }
+                    }
+
+                    //update g edge list
+                    foreach(Edge e in secondForest.EdgeList)
+                    {
+                        if (e.Father.Value.CompareTo(oldData) == 0)
+                        {
+                            e.Father = secondForest.ForestNodesMap[validData];//TODO fine funzione somma
+                        }
+                        else if(e.Child!=null && e.Child.Value.CompareTo(oldData)==0)
+                        {
+                            e.Child = secondForest.ForestNodesMap[validData];
+                        }
+                    }
+                    node.Value = validData;
+                }
+                output.ForestNodesMap.Add(validData, node);
+            }
+            //merge edge lists
+            output.EdgeList.AddRange(secondForest.EdgeList);
+            //merge root lists
+            output.Roots.AddRange(secondForest.Roots);
+            //update node count
+            output.NodeCount = f.NodeCount + g.NodeCount;
+            return output;
+        }
+
+        private static string GetValidData(string value, Dictionary<string, Node> forestNodesMap)
+        {
+            int count = 1;
+            Boolean isDataValid = false;
+            String tempData = value;
+            String rootData = value;
+            while (!isDataValid)
+            {
+                if (forestNodesMap.ContainsKey(tempData))
+                {
+                    tempData = rootData + count;
+                    count++;
+                }
+                else
+                {
+                    isDataValid = true;
                 }
             }
-            return result;
+            return tempData;
         }
 
         private static void PolishProductEdgeList(List<Edge> edgeList)

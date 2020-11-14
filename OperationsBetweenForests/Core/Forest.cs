@@ -32,6 +32,14 @@ namespace OperationsBetweenForests.Core
         {
             EdgeList = edges.ToList();
         }
+
+        public Forest(string name, HashSet<Edge> edges, List<Node> roots, Dictionary<string, Node> nodes) : this()
+        {
+            Name = name;
+            EdgeList = edges.ToList();
+            Roots = roots;
+            ForestNodesMap = nodes;
+        }
         
 
         public Forest(params Node[] node) : this()
@@ -59,6 +67,15 @@ namespace OperationsBetweenForests.Core
             else
             {
                 return false;
+            }
+        }
+
+        internal void GeneratesRelationships()
+        {
+            foreach(Edge e in EdgeList)
+            {
+                e.Father.Children.Add(e.Child);
+                e.Child.Parent = e.Father;
             }
         }
 

@@ -37,6 +37,17 @@ namespace OperationsBetweenForests.Core2
             return Children;
         }
 
+        /*public HashSet<Edge> GenerateEdges()
+        {
+            Set<Edge> edges = new HashSet<>()
+            for (Tree child : children)
+            {
+                edges.add(new Edge(this.label, child.label));
+                edges.addAll(child.getEdges());
+            }
+            return edges.toList()
+        }*/
+
         public Operations Add(Operations other)
         {
             List<Tree> trees = new List<Tree>();

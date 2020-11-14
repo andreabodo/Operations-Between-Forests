@@ -1,4 +1,5 @@
 ﻿using GraphX.Common.Models;
+using GraphX.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;

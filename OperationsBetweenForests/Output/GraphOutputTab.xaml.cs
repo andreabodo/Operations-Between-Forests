@@ -27,6 +27,7 @@ using System.IO;
 using OperationsBetweenForests.Input;
 using OperationsBetweenForests.Core;
 using QuickGraph.Algorithms;
+using System.Collections.ObjectModel;
 
 namespace OperationsBetweenForests.Output
 {
@@ -67,7 +68,7 @@ namespace OperationsBetweenForests.Output
             LogicCore.DefaultOverlapRemovalAlgorithmParams =
                               LogicCore.AlgorithmFactory.CreateOverlapRemovalParameters(OverlapRemovalAlgorithmTypeEnum.FSA);
             ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).HorizontalGap = 50;
-            ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 300;
+            ((OverlapRemovalParameters)LogicCore.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 200;
 
             //This property sets edge routing algorithm that is used to build route paths according to algorithm logic.
             //For ex., SimpleER algorithm will try to set edge paths around vertices so no edge will intersect any vertex.
@@ -85,7 +86,7 @@ namespace OperationsBetweenForests.Output
             graphArea.GenerateGraph(true);
             graphArea.ShowAllEdgesLabels(false);
             graphArea.ShowAllEdgesArrows(false);
-            graphArea.SetVerticesMathShape(VertexShape.Circle);
+            graphArea.SetVerticesMathShape(VertexShape.Rectangle);
             NameLabel.Content = graph.Name;
             NodesLabel.Content = graph.VertexCount;
             EdgesLabel.Content = graph.EdgeCount;
@@ -131,7 +132,7 @@ namespace OperationsBetweenForests.Output
         {
             if (MainWindow.Forests.Count > 0)
             {
-                String selected = GraphList.SelectedItem.ToString();//estrazione foresta da foreste in memoria
+                String selected = GraphListComboBox.SelectedItem.ToString();//estrazione foresta da foreste in memoria
                 MainWindow.Forests.TryGetValue(selected, out Forest f);
                 MyGraph graph = new MyGraph() {Name = selected};
                 Dictionary<String, DataVertex> existingNodes = new Dictionary<String, DataVertex>(); //struttura dati di appoggio per evitare i nodi duplicati
@@ -181,7 +182,7 @@ namespace OperationsBetweenForests.Output
 
         private void ReloadButton_Click(object sender, RoutedEventArgs e)
         {
-            this.GraphList.ItemsSource = MainWindow.Forests.Keys;
+            this.GraphListComboBox.ItemsSource = new ObservableCollection<string>(MainWindow.Forests.Keys);//TODO N.B. richiede una ObservableCollection se no non aggiorna la dimensione di drop down
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)

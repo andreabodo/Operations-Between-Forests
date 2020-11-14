@@ -34,7 +34,7 @@
                 <TextBox x:Name="GraphNameTextBox" Text="Graph name" Margin="8,4,8,4" MinWidth="80"/>
                 <CheckBox x:Name="DirectedCheckBox" Content="Directed" HorizontalAlignment="Left" Margin="8,4, 8, 4"/>
             </StackPanel>
-            <Button x:Name="GenerateGraphButton" Grid.Column="1" Content="Generate graph" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="8,4,258,4" Click="GenerateGraphButton_Click" Style="{StaticResource buttonsStyle}"/>
+            <Button x:Name="GenerateGraphButton" Grid.Column="1" Content="Generate graph" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="8,4,258,4" Click="GenerateGraphButton_Click" Style="{StaticResource buttonsStyle}" Width="Auto"/>
         </StackPanel>
     </Grid>
 </UserControl>

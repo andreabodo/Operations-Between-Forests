@@ -123,7 +123,7 @@ namespace OperationsBetweenForests.Input
                         if (!(existingNodes.Contains(child)))
                         {
                             existingNodes.Add(child);
-                            child.Parent = father;
+                            //child.Parent = father;
                             result.ForestNodesMap.Add(b, child);
                             result.NodeCount += 1;
                             result.EdgeList.Add(new Edge(father, child));
@@ -145,7 +145,7 @@ namespace OperationsBetweenForests.Input
                             existingNodes.Add(child);
                             result.ForestNodesMap.Add(b, child);
                             result.NodeCount += 1;
-                            child.Parent = father;
+                            //child.Parent = father;
                             result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], child));
                         }
                         else

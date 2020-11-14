@@ -37,7 +37,7 @@
             <Label x:Name="Edges" Content="Edges" Grid.Column="0" Grid.Row="2"/>
             <Label x:Name="EdgesLabel" Content="" Grid.Column="1" Grid.Row="2"/>
         </Grid>
-        <ComboBox x:Name="GraphList" Grid.Column="1" HorizontalAlignment="Left" Width="160" Margin="10,14,0,0" Height="22" VerticalAlignment="Top"/>
+        <ComboBox x:Name="GraphListComboBox" Grid.Column="1" HorizontalAlignment="Left" Width="160" Margin="10,14,0,0" VerticalAlignment="Top" SelectedIndex="0" MaxDropDownHeight="Auto"/>
         <Button x:Name="ShowGraphButton" Content="Show" Grid.Column="1" Margin="57,250,58,0" Click="ShowGraphButton_Click" Height="20" VerticalAlignment="Top"/>
         <Button x:Name="LoadButton" Content="Load" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20" Click="LoadButton_Click"/>
     </Grid>

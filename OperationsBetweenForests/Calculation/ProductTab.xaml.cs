@@ -25,6 +25,7 @@ namespace OperationsBetweenForests.Calculation
 
         private Dictionary<String, Forest> ProdForests { get; set; }
         private List<Forest> LocalForests { get; set; }
+        //private List<Core2.Forest> LocalForests2 { get; set; }
 
         public ProductTab()
         {
@@ -45,6 +46,7 @@ namespace OperationsBetweenForests.Calculation
                 ClearDict();
             }
             Forest f = (Forest)FileManager.DeserializeFromJsonFile();
+            f.GeneratesRelationships();
             ProdForests.Add(f.Name, f);
             FirstOperandTextBlock.Text = f.Name;
             LocalForests.Add(f);

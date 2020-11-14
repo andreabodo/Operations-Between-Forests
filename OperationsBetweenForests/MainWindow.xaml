@@ -22,5 +22,8 @@
         <TabItem Header="Product">
             <calculation:ProductTab/>
         </TabItem>
+        <TabItem Header="OutGraphviz">
+            <output:GraphvizOutputTab/>
+        </TabItem>
     </TabControl>
 </Window>
