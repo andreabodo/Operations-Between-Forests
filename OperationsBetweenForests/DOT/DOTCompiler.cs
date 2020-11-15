@@ -34,7 +34,7 @@ namespace OperationsBetweenForests.DOT
                         Label = sourceEdge.Father.Value,
                         FillColor = Color.LightGray,
                         FontColor = Color.Black,
-                        Style = DotNodeStyle.Dotted,
+                        Style = DotNodeStyle.Solid,
                         Height = 0.5f
                     };
                     graph.Elements.Add(fath);//aggiunta al grafo
@@ -47,7 +47,7 @@ namespace OperationsBetweenForests.DOT
                             Label = sourceEdge.Child.Value,
                             FillColor = Color.LightGray,
                             FontColor = Color.Black,
-                            Style = DotNodeStyle.Dotted,
+                            Style = DotNodeStyle.Solid,
                             Height = 0.5f
                         };
                         graph.Elements.Add(chil);//aggiunta al grafo
@@ -88,7 +88,7 @@ namespace OperationsBetweenForests.DOT
                             Label = sourceEdge.Child.Value,
                             FillColor = Color.LightGray,
                             FontColor = Color.Black,
-                            Style = DotNodeStyle.Dotted,
+                            Style = DotNodeStyle.Solid,
                             Height = 0.5f
                         };
                         graph.Elements.Add(chil);//aggiunta al grafo

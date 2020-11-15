@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="OperationsBetweenForests.Output.GraphvizOutputTab"
+      x:Name="GraphvizTab"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,11 +8,14 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Margin="0">
+    <Grid Margin="0" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="GraphColumn" Width="*"/>
             <ColumnDefinition x:Name="CommandsColumn" Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <ScrollViewer x:Name="ScrollImage" Grid.Column="0" Margin="0,0,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Image x:Name="GraphImage" Grid.Column="0" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" Source="{Binding ImageFilePath, ElementName=GraphvizTab}" Stretch="None"/>
+        </ScrollViewer>
         <Button x:Name="ReloadButton" Content="Refresh" Grid.Column="1" Margin="57, 50, 58, 0" Click="ReloadButton_Click" Height="20" VerticalAlignment="Top"/>
         <Grid x:Name="InfoGrid" Grid.Column="1" VerticalAlignment="Top" Margin="2, 150, 2, 0" Height="75">
             <Grid.ColumnDefinitions>

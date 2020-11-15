@@ -10,7 +10,7 @@
         xmlns:input = "clr-namespace:OperationsBetweenForests.Input"
         xmlns:calculation ="clr-namespace:OperationsBetweenForests.Calculation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1200">
     
     <TabControl x:Name="GeneralTab" Margin="0">
         <TabItem Header="Input">

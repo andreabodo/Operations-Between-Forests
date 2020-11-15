@@ -5,6 +5,7 @@ using OperationsBetweenForests.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,9 +26,30 @@ namespace OperationsBetweenForests.Output
     /// </summary>
     public partial class GraphvizOutputTab : UserControl
     {
+
+
+        public string ImageFilePath
+        {
+            get { return (string)GetValue(ImageFilePathProperty); }
+            set { SetValue(ImageFilePathProperty, value); }
+        }
+        public static readonly DependencyProperty ImageFilePathProperty =
+            DependencyProperty.Register("ImageFilePath", typeof(string), typeof(GraphvizOutputTab), new PropertyMetadata(""));
+
+       /* private static void OnImageFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            GraphvizOutputTab outTab = (GraphvizOutputTab)d;
+            BitmapImage btmpimg = new BitmapImage();
+            btmpimg.BeginInit();
+            btmpimg.UriSource = new Uri((string) e.NewValue, UriKind.Relative);
+            btmpimg.EndInit();
+            outTab.GraphImage.Source = btmpimg;
+        }*/
+
         public GraphvizOutputTab()
         {
             InitializeComponent();
+            ImageFilePath = "";
         }
 
         private void ShowGraphButton_Click(object sender, RoutedEventArgs e)
@@ -38,6 +60,15 @@ namespace OperationsBetweenForests.Output
                 DotGraph graph = DOTCompiler.ToDotGraph(MainWindow.Forests[selected]);
                 String fileName = graph.Identifier;
                 FileManager.SaveDotFile(fileName, DOTCompiler.DotCompile(graph));
+                DOTEngine.Run(@"DOTGraphs/" + fileName + ".dot");
+                if (File.Exists(@"DOTGraphs/" + fileName + ".dot.png"))
+                {
+                    BitmapImage btpimg = new BitmapImage();
+                    btpimg.BeginInit();
+                    btpimg.UriSource = new Uri(System.IO.Path.GetFullPath(@"DOTGraphs/" + fileName + ".dot.png"), UriKind.Absolute);
+                    btpimg.EndInit();
+                    GraphImage.Source = btpimg;
+                }
             }
         }
 
@@ -54,11 +85,6 @@ namespace OperationsBetweenForests.Output
                 MainWindow.Forests.Add(f.Name, f);
                 ReloadButton_Click(this, new RoutedEventArgs(MouseUpEvent));
             }
-        }
-
-        private void LoadGraphImage(String path)
-        {
-
         }
     }
 }
