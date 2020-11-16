@@ -83,7 +83,7 @@ namespace OperationsBetweenForests.Core
         }
         
 
-        public Forest(Node root) : this()
+        public Forest(Node root) : this()//si può estrarre sottoalbero?
         {
             List<Node> nodeList = new List<Node>();
             if (root.Children.Count == 0)
@@ -108,7 +108,7 @@ namespace OperationsBetweenForests.Core
                 {
                     Edge e = new Edge(node.Parent, treeNode);
                     EdgeList.Add(e);
-                    Node fatherNode = ForestNodesMap[node.Value];
+                    Node fatherNode = ForestNodesMap[node.Parent.Value];//errore chiave (padre se radice?) non trovata
                     fatherNode.Children.Add(treeNode);
                     treeNode.Parent = fatherNode;
                 }

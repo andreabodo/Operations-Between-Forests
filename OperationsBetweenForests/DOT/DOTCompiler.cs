@@ -75,6 +75,7 @@ namespace OperationsBetweenForests.DOT
                             Label = "",
                             Style = DotEdgeStyle.Solid,
                             PenWidth = 1.0f
+                            
                         };
                         graph.Elements.Add(edge);
                     }
