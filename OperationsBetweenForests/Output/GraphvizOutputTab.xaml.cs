@@ -27,29 +27,36 @@ namespace OperationsBetweenForests.Output
     public partial class GraphvizOutputTab : UserControl
     {
 
-
-        public string ImageFilePath
-        {
-            get { return (string)GetValue(ImageFilePathProperty); }
-            set { SetValue(ImageFilePathProperty, value); }
-        }
-        public static readonly DependencyProperty ImageFilePathProperty =
-            DependencyProperty.Register("ImageFilePath", typeof(string), typeof(GraphvizOutputTab), new PropertyMetadata(""));
-
-       /* private static void OnImageFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            GraphvizOutputTab outTab = (GraphvizOutputTab)d;
-            BitmapImage btmpimg = new BitmapImage();
-            btmpimg.BeginInit();
-            btmpimg.UriSource = new Uri((string) e.NewValue, UriKind.Relative);
-            btmpimg.EndInit();
-            outTab.GraphImage.Source = btmpimg;
-        }*/
+        //Zoom values
+        double scale = 1.0;
+        readonly double minScale = 0.5;
+        readonly double maxScale = 3.0;
 
         public GraphvizOutputTab()
         {
             InitializeComponent();
-            ImageFilePath = "";
+        }
+
+        private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // back to normal (maybe this isn't needed since we're making a new one below anyway)
+            GraphImage.RenderTransform = null;
+
+            var position = e.MouseDevice.GetPosition(GraphImage);
+
+            if (e.Delta > 0)
+                scale += 0.1;
+            else
+                scale -= 0.1;
+
+            if (scale > maxScale)
+                scale = maxScale;
+            if (scale < minScale)
+                scale = minScale;
+
+            GraphImage.RenderTransform = new ScaleTransform(scale, scale, position.X, position.Y);
+
+
         }
 
         private void ShowGraphButton_Click(object sender, RoutedEventArgs e)

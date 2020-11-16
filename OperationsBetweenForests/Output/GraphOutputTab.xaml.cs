@@ -138,14 +138,14 @@ namespace OperationsBetweenForests.Output
                 Dictionary<String, DataVertex> existingNodes = new Dictionary<String, DataVertex>(); //struttura dati di appoggio per evitare i nodi duplicati
                 foreach(Edge sourceEdge in f.EdgeList)
                 {
-                    if (!(existingNodes.ContainsKey(sourceEdge.Father.Value)))//padre non esiste
+                    if (!(existingNodes.ContainsKey(sourceEdge.Father)))//padre non esiste
                     {
-                        DataVertex fath = new DataVertex(sourceEdge.Father.Value);
+                        DataVertex fath = new DataVertex(sourceEdge.Father);
                         graph.AddVertex(fath);
                         existingNodes.Add(fath.Text, fath);
-                        if (!(existingNodes.ContainsKey(sourceEdge.Child.Value)))
+                        if (!(existingNodes.ContainsKey(sourceEdge.Child)))
                         {
-                            DataVertex chil = new DataVertex(sourceEdge.Child.Value);
+                            DataVertex chil = new DataVertex(sourceEdge.Child);
                             graph.AddVertex(chil);
                             existingNodes.Add(chil.Text, chil);
                             graph.AddEdge(new DataEdge(fath, chil));
@@ -153,17 +153,17 @@ namespace OperationsBetweenForests.Output
                         else
                         {
                             DataVertex chil = new DataVertex();
-                            existingNodes.TryGetValue(sourceEdge.Child.Value, out chil);
+                            existingNodes.TryGetValue(sourceEdge.Child, out chil);
                             graph.AddEdge(new DataEdge(fath, chil));
                         }
                     }
                     else//padre esiste
                     {
                         DataVertex fath = new DataVertex();
-                        existingNodes.TryGetValue(sourceEdge.Father.Value, out fath);
-                        if (!(existingNodes.ContainsKey(sourceEdge.Child.Value)))
+                        existingNodes.TryGetValue(sourceEdge.Father, out fath);
+                        if (!(existingNodes.ContainsKey(sourceEdge.Child)))
                         {
-                            DataVertex chil = new DataVertex(sourceEdge.Child.Value);
+                            DataVertex chil = new DataVertex(sourceEdge.Child);
                             graph.AddVertex(chil);
                             existingNodes.Add(chil.Text, chil);
                             graph.AddEdge(new DataEdge(fath, chil));
@@ -171,7 +171,7 @@ namespace OperationsBetweenForests.Output
                         else
                         {
                             DataVertex chil = new DataVertex();
-                            existingNodes.TryGetValue(sourceEdge.Child.Value, out chil);
+                            existingNodes.TryGetValue(sourceEdge.Child, out chil);
                             graph.AddEdge(new DataEdge(fath, chil));
                         }
                     }

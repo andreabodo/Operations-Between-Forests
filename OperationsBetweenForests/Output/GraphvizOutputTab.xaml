@@ -14,7 +14,7 @@
             <ColumnDefinition x:Name="CommandsColumn" Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ScrollViewer x:Name="ScrollImage" Grid.Column="0" Margin="0,0,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Image x:Name="GraphImage" Grid.Column="0" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" Source="{Binding ImageFilePath, ElementName=GraphvizTab}" Stretch="None"/>
+            <Image x:Name="GraphImage" Grid.Column="0" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" Source="{Binding ImageFilePath, ElementName=GraphvizTab}" Stretch="None" MouseWheel="Image_MouseWheel"/>
         </ScrollViewer>
         <Button x:Name="ReloadButton" Content="Refresh" Grid.Column="1" Margin="57, 50, 58, 0" Click="ReloadButton_Click" Height="20" VerticalAlignment="Top"/>
         <Grid x:Name="InfoGrid" Grid.Column="1" VerticalAlignment="Top" Margin="2, 150, 2, 0" Height="75">

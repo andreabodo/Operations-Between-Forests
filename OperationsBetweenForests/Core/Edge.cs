@@ -10,20 +10,46 @@ namespace OperationsBetweenForests.Core
     public class Edge
     {
 
-        public Node Father { get; set; }
-        public Node Child { get; set; }
+        public string Father { get; set; }
+        public string Child { get; set; }
 
 
         public Edge()
         {
-            Father = new Node();
-            Child = new Node();
+            Father = null;
+            Child = null;
         }
 
-        public Edge(Node father, Node child) : this()
+        public Edge(string father, string child) : this()
         {
             Father = father;
             Child = child;
         }
+
+        public Edge(Node father, Node child) : this()
+        {
+            if(child is null)
+            {
+                Father = father.Value;
+                Child = null;
+            }
+            else
+            {
+                Father = father.Value;
+                Child = child.Value;
+            }
+        }
+
+       /* public Edge(string father, Node child) : this()
+        {
+            Father = father;
+            Child = child.Value;
+        }
+
+        public Edge(Node father, string child) : this()
+        {
+            Father = father.Value;
+            Child = child;
+        }*/
     }
 }

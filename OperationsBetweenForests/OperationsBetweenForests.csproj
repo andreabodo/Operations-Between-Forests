@@ -430,11 +430,6 @@
     <Content Include="External\neato.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Output\Fly 500.jpg" />
-    <Resource Include="Output\A5.dot.png" />
-    <Resource Include="Output\A5.png" />
-    <Resource Include="Output\A5.jpg" />
-    <Resource Include="Output\A5.dot.jpg" />
     <Resource Include="External\New Text Document.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

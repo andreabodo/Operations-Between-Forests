@@ -26,12 +26,12 @@ namespace OperationsBetweenForests.DOT
             Dictionary<String, DotNode> existingNodes = new Dictionary<string, DotNode>();//dict di supporto
             foreach (Edge sourceEdge in f.EdgeList)
             {
-                if (!(existingNodes.ContainsKey(sourceEdge.Father.Value)))//padre non esiste ancora
+                if (!(existingNodes.ContainsKey(sourceEdge.Father)))//padre non esiste ancora
                 {
-                    DotNode fath = new DotNode(sourceEdge.Father.Value)
+                    DotNode fath = new DotNode(sourceEdge.Father)
                     {
                         Shape = DotNodeShape.Ellipse,
-                        Label = sourceEdge.Father.Value,
+                        Label = sourceEdge.Father,
                         FillColor = Color.LightGray,
                         FontColor = Color.Black,
                         Style = DotNodeStyle.Solid,
@@ -39,12 +39,12 @@ namespace OperationsBetweenForests.DOT
                     };
                     graph.Elements.Add(fath);//aggiunta al grafo
                     existingNodes.Add(fath.Identifier, fath);//aggiornamento dict supporto
-                    if (!(existingNodes.ContainsKey(sourceEdge.Child.Value)))//figlio non esiste ancora
+                    if (sourceEdge.Child != null && !(existingNodes.ContainsKey(sourceEdge.Child)))//figlio non esiste ancora
                     {
-                        DotNode chil = new DotNode(sourceEdge.Child.Value)
+                        DotNode chil = new DotNode(sourceEdge.Child)
                         {
                             Shape = DotNodeShape.Ellipse,
-                            Label = sourceEdge.Child.Value,
+                            Label = sourceEdge.Child,
                             FillColor = Color.LightGray,
                             FontColor = Color.Black,
                             Style = DotNodeStyle.Solid,
@@ -66,7 +66,7 @@ namespace OperationsBetweenForests.DOT
                     }
                     else //figlio esiste
                     {
-                        DotEdge edge = new DotEdge(fath, existingNodes[sourceEdge.Child.Value])
+                        DotEdge edge = new DotEdge(fath, existingNodes[sourceEdge.Child])
                         {
                             ArrowHead = DotEdgeArrowType.None,
                             ArrowTail = DotEdgeArrowType.None,
@@ -76,16 +76,17 @@ namespace OperationsBetweenForests.DOT
                             Style = DotEdgeStyle.Solid,
                             PenWidth = 1.0f
                         };
+                        graph.Elements.Add(edge);
                     }
                 }
                 else//padre esiste
                 {
-                    if(!(existingNodes.ContainsKey(sourceEdge.Child.Value)))//figlio non esiste ancora
+                    if(sourceEdge.Child != null && !(existingNodes.ContainsKey(sourceEdge.Child)))//figlio non esiste ancora
                     {
-                        DotNode chil = new DotNode(sourceEdge.Child.Value)
+                        DotNode chil = new DotNode(sourceEdge.Child)
                         {
                             Shape = DotNodeShape.Ellipse,
-                            Label = sourceEdge.Child.Value,
+                            Label = sourceEdge.Child,
                             FillColor = Color.LightGray,
                             FontColor = Color.Black,
                             Style = DotNodeStyle.Solid,
@@ -93,7 +94,7 @@ namespace OperationsBetweenForests.DOT
                         };
                         graph.Elements.Add(chil);//aggiunta al grafo
                         existingNodes.Add(chil.Identifier, chil);//aggiornamento dict supporto
-                        DotEdge edge = new DotEdge(existingNodes[sourceEdge.Father.Value], chil)
+                        DotEdge edge = new DotEdge(existingNodes[sourceEdge.Father], chil)
                         {
                             ArrowHead = DotEdgeArrowType.None,
                             ArrowTail = DotEdgeArrowType.None,
@@ -107,7 +108,7 @@ namespace OperationsBetweenForests.DOT
                     }
                     else
                     {
-                        DotEdge edge = new DotEdge(existingNodes[sourceEdge.Father.Value], existingNodes[sourceEdge.Child.Value])
+                        DotEdge edge = new DotEdge(existingNodes[sourceEdge.Father], existingNodes[sourceEdge.Child])
                         {
                             ArrowHead = DotEdgeArrowType.None,
                             ArrowTail = DotEdgeArrowType.None,
@@ -117,6 +118,7 @@ namespace OperationsBetweenForests.DOT
                             Style = DotEdgeStyle.Solid,
                             PenWidth = 1.0f
                         };
+                        graph.Elements.Add(edge);
                     }
                 }
             }

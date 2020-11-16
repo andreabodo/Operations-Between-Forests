@@ -38,25 +38,30 @@ namespace OperationsBetweenForests.Core
 
         public static Forest Product(Forest f, Forest g)
         {
+            String resultName = f.Name + g.Name;
+            List<Node> firstInputRoots = new List<Node>(f.Roots);
+            Forest firstInputForest = new Forest(f.Name, f.EdgeList, f.Roots, f.ForestNodesMap);
+            List<Node> secondInputRoots = new List<Node>(g.Roots);
+            Forest secondInputForest = new Forest(g.Name, g.EdgeList, g.Roots, g.ForestNodesMap);
             Forest resultForest = new Forest() { Name = f.Name + "," + g.Name };//TODO inizializzare? (no)
-            if (g.IsSingleNode())
+            if (secondInputForest.IsSingleNode())
             {
                 //substitute label with new ones
-                BuildLabels(f, g);
-                return f;
+                //BuildLabels(firstInputForest, secondInputForest);
+                return firstInputForest;
             }
-            else if (f.IsSingleNode())
+            else if (firstInputForest.IsSingleNode())
             {
                 //substitute label with new ones
-                BuildLabels(f, g);
-                return g;
+               //BuildLabels(firstInputForest, secondInputForest);
+                return secondInputForest;
             }
-            //multiple trees in F
-            else if(!f.IsSingleNode() && !(f is null))
+            //multiple trees in f applies distributive property
+            else if(firstInputForest.Roots.Count>1 && !(firstInputForest is null))
             {
                 //get list of trees
                 List<Forest> treeList = new List<Forest>();
-                foreach(Node root in f.Roots)
+                foreach(Node root in firstInputForest.Roots)
                 {
                     Forest tree = new Forest(root);
                     treeList.Add(tree);
@@ -65,7 +70,7 @@ namespace OperationsBetweenForests.Core
                 List<Forest> resultList = new List<Forest>();
                 foreach(Forest tree in treeList)
                 {
-                    resultList.Add(Product(tree, g));
+                    resultList.Add(Product(tree, secondInputForest));
                 }
                 //sum the forest in result list
                 Forest result = resultList.First();
@@ -75,14 +80,15 @@ namespace OperationsBetweenForests.Core
                     result = Sum(result, resultList.First());
                     resultList.RemoveAt(0);
                 }
+                result.Name = resultName;
                 return result;
             }
             //multiple trees in g (same as previous but for g)
-            else if (!g.IsSingleNode() && !(g is null))
+            else if (secondInputForest.Roots.Count>1 && !(secondInputForest is null))
             {
                 //get list of trees
                 List<Forest> treeList = new List<Forest>();
-                foreach(Node root in g.Roots)
+                foreach(Node root in secondInputForest.Roots)
                 {
                     Forest tree = new Forest(root);
                     treeList.Add(tree);
@@ -91,7 +97,7 @@ namespace OperationsBetweenForests.Core
                 List<Forest> resultList = new List<Forest>();
                 foreach(Forest tree in treeList)
                 {
-                    resultList.Add(Product(tree, f));
+                    resultList.Add(Product(tree, firstInputForest));
                 }
                 //sum the forest in output list
                 Forest result = resultList.First();
@@ -101,18 +107,19 @@ namespace OperationsBetweenForests.Core
                     result = Sum(result, resultList.First());
                     resultList.RemoveAt(0);
                 }
+                result.Name = resultName;
                 return result;
             }
-            //calculate F and G trees product
-            Forest f_Bottomless = Bottomless(f);
-            Forest g_Bottomless = Bottomless(g);
+            //if here, calculates F and G trees product: at this point applies forest product formula F_xG_=((F_xG)+(FxG)+(FxG_))_
+            Forest f_Bottomless = Bottomless(firstInputForest);
+            Forest g_Bottomless = Bottomless(secondInputForest);
             List<Forest> outputList = new List<Forest>();
             //F_ x G
-            outputList.Add(Product(f, g_Bottomless));
+            outputList.Add(Product(firstInputForest, g_Bottomless));
             //F x G
             outputList.Add(Product(f_Bottomless, g_Bottomless));
             //F x G_
-            outputList.Add(Product(f_Bottomless, g));
+            outputList.Add(Product(f_Bottomless, secondInputForest));
             //sum partial result
             Forest output = outputList.First();
             outputList.RemoveAt(0);
@@ -125,33 +132,39 @@ namespace OperationsBetweenForests.Core
             String f_RootLabel = f.Roots.First().Value;
             String g_RootLabel = g.Roots.First().Value;
             String rootLabel = "(" + f_RootLabel + "," + g_RootLabel + ")";
-            resultForest = Bottom(output, rootLabel);
+            resultForest = Bottom(output);
             PolishProductEdgeList(resultForest.EdgeList);
+            resultForest.Name = resultName;
             return resultForest;
         }
 
-       /* public static Forest Product2(Forest f, Forest g)
+        private static Forest Bottom(Forest f)
         {
-            List<Node> firstInputRootsList = new List<Node>(f.Roots);
-            Forest firstInputForest = new Forest(firstInputRootsList);
-            List<Node> secondInputRootsList = new List<Node>(g.Roots);
-            //Forest secondInputForest
-
-        }*/
-
-        private static Forest Bottom(Forest output, string rootLabel)
-        {
-            Node n = new Node(rootLabel);
-            n.Children.AddRange(output.Roots);
-            output.Roots.Clear();
-            output.Roots.Add(n);
-            List<Edge> newEdges = new List<Edge>();
-            foreach(Node c in n.Children)
+            Forest result = new Forest(f.Name, f.EdgeList, f.Roots, f.ForestNodesMap);
+            String rootData = GetValidData("R", f.ForestNodesMap);
+            Node root = new Node(rootData);
+            //updates edge list
+            List<Edge> edgeList = new List<Edge>();
+            foreach(Node oldRoot in result.Roots)
             {
-                newEdges.Add(new Edge(n, c));
+                //new node as parent
+                oldRoot.Parent = root;
+                //add child to new root
+                root.Children.Add(oldRoot);
+                Edge e = new Edge(root, oldRoot);
+                edgeList.Add(e);
             }
-            output.ForestNodesMap.Add(n.Value, n);
-            return output;
+            result.EdgeList.AddRange(edgeList);
+            //updates roots list
+            List<Node> updatedRoots = new List<Node>();
+            updatedRoots.Add(root);
+            result.Roots = updatedRoots;
+            //updates nodes map
+            result.ForestNodesMap.Add(root.Value, root);
+            //updates nodes count
+            int oldNodesCount = f.NodeCount;
+            result.NodeCount = result.ForestNodesMap.Count;
+            return result;
         }
 
         /*
@@ -177,19 +190,23 @@ namespace OperationsBetweenForests.Core
 
         private static Forest Bottomless(Forest f)
         {
-            Node n = f.Roots.First();
-            f.Roots.Remove(n);
-            f.Roots.AddRange(n.Children);
-            List<Edge> edgeList = f.EdgeList;
-            foreach(Edge e in edgeList)
+            List<Node> nodesList = new List<Node>(f.Roots);
+            foreach(Node root in nodesList)
             {
-                if (e.Father.Equals(n))
+                f.Roots.Remove(root);
+                f.ForestNodesMap.Remove(root.Value);
+                foreach(Node child in root.Children)
                 {
-                    e.Child = null;
+                    f.Roots.Add(child);
+                    child.Parent = null;
+                    //Node newRoot = new Node(child.Value);
+                    //newRoot.Children.AddRange(child.Children);
+                    //nodesList.Add(newRoot);
                 }
+                f.EdgeList.RemoveAll(x => x.Father == root.Value);
             }
-            f.ForestNodesMap.Remove(n.Value);
-            return f;
+            f.NodeCount = f.ForestNodesMap.Count;
+            return f; //new Forest(nodesList);
         }
 
         private static Forest Sum(Forest f, Forest g)
@@ -221,13 +238,13 @@ namespace OperationsBetweenForests.Core
                     //update g edge list
                     foreach(Edge e in secondForest.EdgeList)
                     {
-                        if (e.Father.Value.CompareTo(oldData) == 0)
+                        if (e.Father.CompareTo(oldData) == 0)
                         {
-                            e.Father = secondForest.ForestNodesMap[validData];//TODO fine funzione somma
+                            e.Father = validData;
                         }
-                        else if(e.Child!=null && e.Child.Value.CompareTo(oldData)==0)
+                        else if (e.Child != null && e.Child.CompareTo(oldData) == 0)
                         {
-                            e.Child = secondForest.ForestNodesMap[validData];
+                            e.Child = validData;
                         }
                     }
                     node.Value = validData;
@@ -253,7 +270,7 @@ namespace OperationsBetweenForests.Core
             {
                 if (forestNodesMap.ContainsKey(tempData))
                 {
-                    tempData = rootData + count;
+                    tempData = rootData + "_" + count;
                     count++;
                 }
                 else
@@ -266,7 +283,8 @@ namespace OperationsBetweenForests.Core
 
         private static void PolishProductEdgeList(List<Edge> edgeList)
         {
-            foreach(Edge e in edgeList)
+            List<Edge> inputEdgeList = new List<Edge>(edgeList);
+            foreach(Edge e in inputEdgeList)
             {
                 if(e.Child == null)
                 {
@@ -303,14 +321,14 @@ namespace OperationsBetweenForests.Core
                     {
                         if (e.Child != null)
                         {
-                            if (e.Child.Value.CompareTo(oldLabel) == 0)
+                            if (e.Child.CompareTo(oldLabel) == 0)
                             {
-                                e.Child.Value = newLabel;
+                                e.Child = newLabel;
                             }
                         }
-                        if (e.Father.Value.CompareTo(oldLabel) == 0)
+                        if (e.Father.CompareTo(oldLabel) == 0)
                         {
-                            e.Father.Value = newLabel;
+                            e.Father = newLabel;
                         }
                     }
                     //update nodesToBeParsed list
@@ -343,14 +361,14 @@ namespace OperationsBetweenForests.Core
                     {
                         if(!(e.Child is null))
                         {
-                            if(e.Child.Value.CompareTo(oldLabel) == 0)
+                            if(e.Child.CompareTo(oldLabel) == 0)
                             {
-                                e.Child.Value = newLabel;
+                                e.Child = newLabel;
                             }
                         }
-                        if(e.Father.Value.CompareTo(oldLabel) == 0)
+                        if(e.Father.CompareTo(oldLabel) == 0)
                         {
-                            e.Father.Value = newLabel;
+                            e.Father = newLabel;
                         }
                     }
                     //update nodesToBeParsed list

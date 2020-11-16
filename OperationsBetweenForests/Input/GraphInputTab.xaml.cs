@@ -123,13 +123,16 @@ namespace OperationsBetweenForests.Input
                         if (!(existingNodes.Contains(child)))
                         {
                             existingNodes.Add(child);
-                            //child.Parent = father;
+                            child.Parent = father;
+                            //father.Children.Add(child);//assegna il figli nuovo al padre nuovo
                             result.ForestNodesMap.Add(b, child);
                             result.NodeCount += 1;
                             result.EdgeList.Add(new Edge(father, child));
                         }
                         else
                         {
+                            //father.Children.Add(existingNodes[existingNodes.IndexOf(child)]);// assegna il figlio esistente al padre nuovo
+                            existingNodes[existingNodes.IndexOf(child)].Parent = father;
                             result.EdgeList.Add(new Edge(father, existingNodes[existingNodes.IndexOf(child)]));
                         }
                     }
@@ -145,11 +148,14 @@ namespace OperationsBetweenForests.Input
                             existingNodes.Add(child);
                             result.ForestNodesMap.Add(b, child);
                             result.NodeCount += 1;
-                            //child.Parent = father;
+                            child.Parent = father;
+                            //father.Children.Add(child);//assegna il figlio nuovo al padre esistente
                             result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], child));
                         }
                         else
                         {
+                            //existingNodes[existingNodes.IndexOf(father)].Children.Add(existingNodes[existingNodes.IndexOf(child)]);//assegna il figlio esistente al padre esistente
+                            existingNodes[existingNodes.IndexOf(child)].Parent = existingNodes[existingNodes.IndexOf(father)];
                             result.EdgeList.Add(new Edge(existingNodes[existingNodes.IndexOf(father)], existingNodes[existingNodes.IndexOf(child)]));
                         }
 
@@ -158,6 +164,7 @@ namespace OperationsBetweenForests.Input
             }
             result.Roots = FindRoots(result);
             result.Name = GraphNameTextBox.Text;
+            result.NodeCount = result.ForestNodesMap.Count;
             OperationsBetweenForests.MainWindow.Forests.Add(result.Name, result);
             FileManager.SaveToJsonFile(result);
         }

@@ -19,14 +19,14 @@ namespace OperationsBetweenForests.Core
             Children = null;
         }
 
-        public Node(String value, Node parent = null)
+        public Node(String value, Node parent = null) : this()
         {
             this.Value = value;
             this.Parent = parent;
             Children = new List<Node>();
         }
 
-        internal void RemoveParent()
+        public void RemoveParent()
         {
             Parent = null;
         }
@@ -42,5 +42,7 @@ namespace OperationsBetweenForests.Core
                 return base.Equals(obj);
             }
         }
+
+        //? public boolean isParent(Node node) ?
     }
 }

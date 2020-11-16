@@ -41,12 +41,13 @@ namespace OperationsBetweenForests.Calculation
 
         private void LoadFirstOperandBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(ProdForests.Count > 1)
+            if (ProdForests.Count > 1)
             {
                 ClearDict();
             }
             Forest f = (Forest)FileManager.DeserializeFromJsonFile();
-            f.GeneratesRelationships();
+            //f.GeneratesParentRelationships();
+            f.GeneratesChildrenRelationships();
             ProdForests.Add(f.Name, f);
             FirstOperandTextBlock.Text = f.Name;
             LocalForests.Add(f);
@@ -59,6 +60,8 @@ namespace OperationsBetweenForests.Calculation
                 ClearDict();
             }
             Forest f = (Forest)FileManager.DeserializeFromJsonFile();
+            //f.GeneratesParentRelationships();
+            f.GeneratesChildrenRelationships();//NON VENGONO AGGIORNATI I NODI ROOT
             ProdForests.Add(f.Name, f);
             SecondOperandTextBlock.Text = f.Name;
             LocalForests.Add(f);
@@ -68,6 +71,7 @@ namespace OperationsBetweenForests.Calculation
         {
             Forest result = ForestCalculator.Product(LocalForests.First(), LocalForests.Last());
             ResultLabel.Content = result.Name;
+            result.DestroyChildrenRelationships();
             FileManager.SaveToJsonFile(result);
             MainWindow.Forests.Add(result.Name+"Res", result);//TODO Salvare nodo singolo; controllare distribuzione etichette
         }
