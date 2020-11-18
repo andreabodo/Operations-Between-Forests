@@ -9,7 +9,7 @@ namespace OperationsBetweenForests.DOT
     public static class DOTEngine
     {
 
-        public static void Run(String dotFilePath)
+        public static void Run(String dotFilePath, int mode = 0)
         {
             //string executable = @"..\..\external\sfdp.exe";
             string executable = @"external\dot.exe";
@@ -26,7 +26,18 @@ namespace OperationsBetweenForests.DOT
 
             // Setup executable and parameters
             process.StartInfo.FileName = executable;
-            process.StartInfo.Arguments = string.Format(@"{0} -Tsvg -O", dotFilePath);
+            switch (mode)
+            {
+                case (int)ModeEnum.PNG: process.StartInfo.Arguments = string.Format(@"{0} -Tpng -O", dotFilePath);
+                    break;
+                case (int)ModeEnum.SVG: process.StartInfo.Arguments = string.Format(@"{0} -Tsvg -O", dotFilePath);
+                    break;
+                case (int)ModeEnum.JPEG: process.StartInfo.Arguments = string.Format(@"{0} -Tjpg -O", dotFilePath);
+                    break;
+                case (int)ModeEnum.PDF: process.StartInfo.Arguments = string.Format(@"{0} -Tpdf -O", dotFilePath);
+                    break;
+            }
+            
 
             // Go
             process.Start();

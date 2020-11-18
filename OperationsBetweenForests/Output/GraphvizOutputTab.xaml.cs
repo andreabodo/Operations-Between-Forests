@@ -73,7 +73,8 @@ namespace OperationsBetweenForests.Output
                 DotGraph graph = DOTCompiler.ToDotGraph(f);
                 String fileName = graph.Identifier;
                 FileManager.SaveDotFile(fileName, DOTCompiler.DotCompile(graph));
-                DOTEngine.Run(@"DOTGraphs/" + fileName + ".dot");
+                DOTEngine.Run(@"DOTGraphs/" + fileName + ".dot", (int)ModeEnum.PNG);
+                DOTEngine.Run(@"DOTGraphs/" + fileName + ".dot", (int)ModeEnum.SVG);
                 if (File.Exists(@"DOTGraphs/" + fileName + ".dot.png"))
                 {
                     BitmapImage btpimg = new BitmapImage();

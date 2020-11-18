@@ -119,6 +119,7 @@
     <Compile Include="Core\ForestCalculator.cs" />
     <Compile Include="DOT\DOTCompiler.cs" />
     <Compile Include="DOT\DOTEngine.cs" />
+    <Compile Include="DOT\ModeEnum.cs" />
     <Compile Include="LogicCoreTreeProvider.cs" />
     <Compile Include="Output\GraphvizOutputTab.xaml.cs">
       <DependentUpon>GraphvizOutputTab.xaml</DependentUpon>
