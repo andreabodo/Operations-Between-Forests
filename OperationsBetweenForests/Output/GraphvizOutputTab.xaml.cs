@@ -1,4 +1,5 @@
 ﻿using DotNetGraph;
+using Microsoft.Win32;
 using OperationsBetweenForests.Core;
 using OperationsBetweenForests.DOT;
 using OperationsBetweenForests.Serialization;
@@ -26,6 +27,7 @@ namespace OperationsBetweenForests.Output
     /// </summary>
     public partial class GraphvizOutputTab : UserControl
     {
+        const string TREEVISUALIZERDATA = @"C:\Users\andre\Desktop\TreeVisualizer\data.json";
 
         //current forest
         Forest currentForest;
@@ -143,23 +145,33 @@ namespace OperationsBetweenForests.Output
 
         private void InteractiveViewButton_Click(object sender, RoutedEventArgs e)
         {
-            string executable = @"x86\Debug\BrowserTest2.exe";
-            //string output = @"C:\Users\andre\Desktop\tempgraph";
-            //File.WriteAllText(output, dot);
+            OpenFileDialog dialog = new OpenFileDialog { Title = "Scegli il file che vuoi aprire", Filter = "TreeFile | *.JSON" };
+            if (dialog.ShowDialog() == true && dialog.FileName.EndsWith(".JSON"))
+            {
+                File.Delete(TREEVISUALIZERDATA);
+                File.Copy(dialog.FileName, TREEVISUALIZERDATA);
+                string executable = @"x86\Debug\BrowserTest2.exe";
+                //string output = @"C:\Users\andre\Desktop\tempgraph";
+                //File.WriteAllText(output, dot);
 
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
 
-            // Stop the process from opening a new window
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = false;
+                // Stop the process from opening a new window
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = false;
 
-            // Setup executable and parameters
-            process.StartInfo.FileName = executable;
-            // Go
-            process.Start();
-            // and wait dot.exe to complete and exit
-            //process.WaitForExit();
+                // Setup executable and parameters
+                process.StartInfo.FileName = executable;
+                // Go
+                process.Start();
+                // and wait dot.exe to complete and exit
+                //process.WaitForExit();
+            }
+            else
+            {
+                MessageBox.Show("Impossibile aprire il file");
+            }
         }
     }
 }
