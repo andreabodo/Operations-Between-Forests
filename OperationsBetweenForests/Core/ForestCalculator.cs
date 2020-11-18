@@ -140,7 +140,7 @@ namespace OperationsBetweenForests.Core
             return resultForest;
         }
 
-        private static Forest Bottom(Forest f)
+        public static Forest Bottom(Forest f)
         {
             Forest result = new Forest(f.Name, f.EdgeList, f.Roots, f.ForestNodesMap);
             String rootData = GetValidData("R", f.ForestNodesMap, f.Name);
@@ -190,7 +190,7 @@ namespace OperationsBetweenForests.Core
             return f; //new Forest(nodesList);
         }
 
-        private static Forest Sum(Forest f, Forest g)
+        public static Forest Sum(Forest f, Forest g)
         {
             Forest output = new Forest(f.Roots,f.Name);
             Forest secondForest = new Forest(g.Roots, g.Name);

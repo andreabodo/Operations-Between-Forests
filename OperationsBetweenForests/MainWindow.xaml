@@ -22,7 +22,8 @@
         <TabItem Header="Forest Product">
             <calculation:ProductTab/>
         </TabItem>
-        <TabItem Header="Interactive Viewer">
+        <TabItem Header="Forest union">
+            <calculation:Forest_union/>
         </TabItem>
     </TabControl>
 </Window>
