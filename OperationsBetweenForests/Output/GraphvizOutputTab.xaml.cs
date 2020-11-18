@@ -27,6 +27,9 @@ namespace OperationsBetweenForests.Output
     public partial class GraphvizOutputTab : UserControl
     {
 
+        //current forest
+        Forest currentForest;
+
         //Zoom values
         double scale = 1.0;
         readonly double minScale = 0.5;
@@ -35,6 +38,7 @@ namespace OperationsBetweenForests.Output
         public GraphvizOutputTab()
         {
             InitializeComponent();
+            currentForest = new Forest();
         }
 
         private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -63,8 +67,10 @@ namespace OperationsBetweenForests.Output
         {
             if (MainWindow.Forests.Count > 0)
             {
+                GraphImage.Source = null;
                 String selected = GraphListComboBox.SelectedItem.ToString();//estrazione foresta da foreste in memoria
-                DotGraph graph = DOTCompiler.ToDotGraph(MainWindow.Forests[selected]);
+                Forest f = MainWindow.Forests[selected];
+                DotGraph graph = DOTCompiler.ToDotGraph(f);
                 String fileName = graph.Identifier;
                 FileManager.SaveDotFile(fileName, DOTCompiler.DotCompile(graph));
                 DOTEngine.Run(@"DOTGraphs/" + fileName + ".dot");
@@ -75,11 +81,15 @@ namespace OperationsBetweenForests.Output
                     btpimg.UriSource = new Uri(System.IO.Path.GetFullPath(@"DOTGraphs/" + fileName + ".dot.png"), UriKind.Absolute);
                     btpimg.EndInit();
                     GraphImage.Source = btpimg;
+                    NameLabel.Content = f.Name;
+                    NodesLabel.Content = f.NodeCount;
+                    EdgesLabel.Content = f.EdgeList.Count;
+                    currentForest = f;
                 }
             }
         }
 
-        private void ReloadButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             this.GraphListComboBox.ItemsSource = new ObservableCollection<string>(MainWindow.Forests.Keys);//TODO N.B. richiede una ObservableCollection se no non aggiorna la dimensione di drop down
         }
@@ -87,10 +97,40 @@ namespace OperationsBetweenForests.Output
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             Forest f = (Forest)FileManager.DeserializeFromJsonFile();
+            f.GeneratesChildrenRelationships();
             if (!(f is null))//se l'utente decide di annullare il caricamento
             {
                 MainWindow.Forests.Add(f.Name, f);
-                ReloadButton_Click(this, new RoutedEventArgs(MouseUpEvent));
+                RefreshButton_Click(this, new RoutedEventArgs(MouseUpEvent));
+            }
+        }
+
+        private void AddRootButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(NewRootTextBox.Text is null || NewRootTextBox.Text is "")
+            {
+                MessageBox.Show("Inserire un valore per la nuova radice!");
+            }
+            else
+            {
+                if(currentForest.Name != null && currentForest.AddRoot(new Node(NewRootTextBox.Text)))
+                {
+                    if (MainWindow.Forests != null && currentForest.Name != null && MainWindow.Forests.ContainsKey(currentForest.Name))
+                    {
+                        //MainWindow.Forests.Remove(currentForest.Name);
+                        //MainWindow.Forests.Add(currentForest.Name, currentForest);
+                        //RefreshButton_Click(this, new RoutedEventArgs(MouseUpEvent));
+                        //currentForest.Name += Time
+                        currentForest.DestroyChildrenRelationships();
+                        FileManager.SaveToJsonFile(currentForest);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Aggiunta radice non riuscita");
+                }
+               
+                
             }
         }
     }

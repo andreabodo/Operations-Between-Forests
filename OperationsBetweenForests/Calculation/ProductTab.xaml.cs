@@ -61,7 +61,7 @@ namespace OperationsBetweenForests.Calculation
             }
             Forest f = (Forest)FileManager.DeserializeFromJsonFile();
             //f.GeneratesParentRelationships();
-            f.GeneratesChildrenRelationships();//NON VENGONO AGGIORNATI I NODI ROOT
+            f.GeneratesChildrenRelationships();//NON VENGONO AGGIORNATI I NODI ROOT(risolto?)
             ProdForests.Add(f.Name, f);
             SecondOperandTextBlock.Text = f.Name;
             LocalForests.Add(f);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace OperationsBetweenForests.Core
 {
@@ -66,6 +67,10 @@ namespace OperationsBetweenForests.Core
             }
             NodeCount = ForestNodesMap.Count;
         }
+        public Forest(List<Node> inputRoots, string name) : this(inputRoots)
+        {
+            Name = name;
+        }
 
         public Forest(HashSet<Edge> edges) : this()
         {
@@ -118,6 +123,10 @@ namespace OperationsBetweenForests.Core
                 nodeList.RemoveAt(0);
             }
             NodeCount = ForestNodesMap.Count;
+        }
+        public Forest(Node root, string name) : this(root)
+        {
+            Name = name;
         }
         #endregion
 
@@ -199,5 +208,34 @@ namespace OperationsBetweenForests.Core
         {
             return f1.Add(f2);
         }
+
+        /// <summary>
+        /// Add a new root node to the current forest.
+        /// </summary>
+        /// <param name="newRoot">Node to add as new root.</param>
+        public Boolean AddRoot(Node newRoot)
+        {
+            Boolean rootAdded = false;
+            foreach (Node n in Roots)
+            {
+                n.Parent = newRoot;
+                EdgeList.Add(new Edge(newRoot, n));
+            }
+            if (ForestNodesMap.ContainsKey(newRoot.Value))
+            {
+                rootAdded = false;
+                MessageBox.Show("La radice inserita possiede un valore già presente nella foresta");
+            }
+            else
+            {
+                ForestNodesMap.Add(newRoot.Value, newRoot);
+                UpdateRoots();
+                NodeCount = ForestNodesMap.Count;
+                rootAdded = true;
+            }
+            return rootAdded;
+        }
+
+
     }
 }

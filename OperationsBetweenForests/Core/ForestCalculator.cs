@@ -47,23 +47,24 @@ namespace OperationsBetweenForests.Core
             if (secondInputForest.IsSingleNode())
             {
                 //substitute label with new ones
-                //BuildLabels(firstInputForest, secondInputForest);
+                //BuildLabels2(firstInputForest, secondInputForest);
                 return firstInputForest;
             }
             else if (firstInputForest.IsSingleNode())
             {
                 //substitute label with new ones
-               //BuildLabels(firstInputForest, secondInputForest);
+                //BuildLabels2(firstInputForest, secondInputForest);
                 return secondInputForest;
             }
             //multiple trees in f applies distributive property
             else if(firstInputForest.Roots.Count>1 && !(firstInputForest is null))
             {
                 //get list of trees
+                int i = 1;
                 List<Forest> treeList = new List<Forest>();
                 foreach(Node root in firstInputForest.Roots)
                 {
-                    Forest tree = new Forest(root);
+                    Forest tree = new Forest(root, firstInputForest.Name+i);
                     treeList.Add(tree);
                 }
                 //calculate product formula
@@ -87,10 +88,11 @@ namespace OperationsBetweenForests.Core
             else if (secondInputForest.Roots.Count>1 && !(secondInputForest is null))
             {
                 //get list of trees
+                int i = 1;
                 List<Forest> treeList = new List<Forest>();
                 foreach(Node root in secondInputForest.Roots)
                 {
-                    Forest tree = new Forest(root);
+                    Forest tree = new Forest(root, secondInputForest.Name+i);
                     treeList.Add(tree);
                 }
                 //calculate product formula
@@ -141,7 +143,7 @@ namespace OperationsBetweenForests.Core
         private static Forest Bottom(Forest f)
         {
             Forest result = new Forest(f.Name, f.EdgeList, f.Roots, f.ForestNodesMap);
-            String rootData = GetValidData("R", f.ForestNodesMap);
+            String rootData = GetValidData("R", f.ForestNodesMap, f.Name);
             Node root = new Node(rootData);
             //updates edge list
             List<Edge> edgeList = new List<Edge>();
@@ -167,27 +169,6 @@ namespace OperationsBetweenForests.Core
             return result;
         }
 
-        /*
-        /// <summary>
-        /// Add a common root
-        /// </summary>
-        /// <param name="f"></param>
-        /// <returns></returns>
-        private static Forest Bottom2(Forest f)
-        {
-            Node root = f.Roots.First();
-            //update edge list
-            List<Edge> edgeList = new List<Edge>();
-            foreach(Node oldRoot in f.Roots)
-            {
-                //set new node as parent
-                oldRoot.Parent = root;
-                //add child to new root
-                root.Children.Add(oldRoot);
-                Edge e = new Edge(root, oldRoot);
-            }
-        }*/
-
         private static Forest Bottomless(Forest f)
         {
             List<Node> nodesList = new List<Node>(f.Roots);
@@ -211,17 +192,17 @@ namespace OperationsBetweenForests.Core
 
         private static Forest Sum(Forest f, Forest g)
         {
-            Forest output = new Forest(f.Roots);
-            Forest secondForest = new Forest(g.Roots);
+            Forest output = new Forest(f.Roots,f.Name);
+            Forest secondForest = new Forest(g.Roots, g.Name);
             foreach(Node node in secondForest.ForestNodesMap.Values)
             {
-                String validData = GetValidData(node.Value, output.ForestNodesMap);
+                String validData = GetValidData(node.Value, output.ForestNodesMap, output.Name);
 
                 //add node to the ForestNodesMap
                 if (validData.CompareTo(node.Value) != 0)
                 {
                     //check the presence of a node with same data in second forest
-                    validData = GetValidData(validData, secondForest.ForestNodesMap);
+                    validData = GetValidData(validData, secondForest.ForestNodesMap, secondForest.Name);
                     String oldData = node.Value;
                     //update g root list
                     if(node.Parent is null)
@@ -260,9 +241,27 @@ namespace OperationsBetweenForests.Core
             return output;
         }
 
+        private static Forest Sum2(Forest f, Forest g)
+        {
+            Forest output = new Forest(f.Roots, f.Name);
+            Forest secondForest = new Forest(g.Roots, g.Name);
+            //merge node maps
+            foreach(Node n in secondForest.ForestNodesMap.Values)
+            {
+                output.ForestNodesMap.Add(n.Value, n);
+            }
+            //merge edge lists
+            output.EdgeList.AddRange(secondForest.EdgeList);
+            //merge root lists
+            output.Roots.AddRange(secondForest.Roots);
+            //update node count
+            output.NodeCount = f.NodeCount + g.NodeCount;
+            return output;
+        }
+
         private static string GetValidData(string value, Dictionary<string, Node> forestNodesMap)
         {
-            int count = 1;
+            long count = 1;
             Boolean isDataValid = false;
             String tempData = value;
             String rootData = value;
@@ -270,7 +269,28 @@ namespace OperationsBetweenForests.Core
             {
                 if (forestNodesMap.ContainsKey(tempData))
                 {
-                    tempData = rootData + "_" + count;
+                    tempData = rootData + count + "{" + DateTime.Today.Millisecond + "}";//i numeri si confondono
+                    count++;
+                }
+                else
+                {
+                    isDataValid = true;
+                }
+            }
+            return tempData;
+        }
+
+        private static string GetValidData(string value, Dictionary<string, Node> forestNodesMap, String forestName)
+        {
+            long count = 1;
+            Boolean isDataValid = false;
+            String tempData = value;
+            String rootData = value;
+            while (!isDataValid)
+            {
+                if (forestNodesMap.ContainsKey(tempData))
+                {
+                    tempData = rootData + "[" + forestName + "]" + count; //+ DateTime.Today.Millisecond;//i numeri si confondono
                     count++;
                 }
                 else
@@ -377,6 +397,24 @@ namespace OperationsBetweenForests.Core
 
                 }
                 #endregion
+            }
+        }
+        
+        public static void BuildLabels2(Forest f, Forest g)
+        {
+            if (f.IsSingleNode())
+            {
+                foreach(Node n in g.ForestNodesMap.Values)
+                {
+                    n.Value = "(" + f.Roots.First().Value + "," + n.Value + ")";
+                }
+            }
+            else if (g.IsSingleNode())
+            {
+                foreach (Node n in f.ForestNodesMap.Values)
+                {
+                    n.Value = "(" + g.Roots.First().Value + "," + n.Value + ")";
+                }
             }
         }
     }

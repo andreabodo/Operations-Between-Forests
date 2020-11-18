@@ -8,6 +8,12 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="White">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,0.3" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="Gold" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="Operator1Column" Width="*"/>
             <ColumnDefinition Name="OperandColumn" Width="0.25*"/>
@@ -17,19 +23,31 @@
             <RowDefinition x:Name="OperatorsRow" Height="*"/>
             <RowDefinition x:Name="ResultRow" Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="LeftOperandStackPanel" Orientation="Horizontal" Margin="2,2,2,2" Background="DarkRed" Grid.Column="0" Grid.Row="0">
+        <StackPanel x:Name="LeftOperandStackPanel" Orientation="Horizontal" Margin="2,2,2,2" Grid.Column="0" Grid.Row="0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,0.5" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF43C755" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
             <Label x:Name="LoadFirstOperatorLabel" Content="First Forest Operand: " Width="Auto" Height="Auto" VerticalAlignment="Center" Margin="5,0,5,0"/>
             <Button x:Name="LoadFirstOperandBtn" Content="Load" Background="Gray" Height="22" Width="Auto" Margin="0,0,15,0" Click="LoadFirstOperandBtn_Click"/>
             <TextBlock x:Name="FirstOperandTextBlock" Background="White" Width="150" Height="25" Focusable="False"/>
         </StackPanel>
-        <StackPanel x:Name="RightOperandStackPanel" Orientation="Horizontal" Margin="2,2,2,2" Background="Blue" Grid.Column="2" Grid.Row="0">
+        <StackPanel x:Name="RightOperandStackPanel" Orientation="Horizontal" Margin="2,2,2,2" Grid.Column="2" Grid.Row="0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,0.5" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF43C755" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
             <Label x:Name="LoadSecondOperatorLabel" Content="Second Forest Operand: " Width="Auto" Height="Auto" VerticalAlignment="Center" Margin="5,0,5,0"/>
             <Button x:Name="LoadSecondOperandBtn" Content="Load" Background="Gray" Height="22" Width="Auto" Margin="0,0,15,0" Click="LoadSecondOperandBtn_Click"/>
             <TextBlock x:Name="SecondOperandTextBlock" Background="White" Width="150" Height="25" Focusable="False"/>
         </StackPanel>
         <Label x:Name="ProductSymbol" Content="X" FontSize="80" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label x:Name="ResultLabel" Content="" Grid.ColumnSpan="3" Grid.Row="1" Width="220" Height="25" BorderBrush="Black" BorderThickness="1"/>
+            <Label x:Name="ResultLabel" Content="" Grid.ColumnSpan="3" Grid.Row="1" Width="220" Height="25" BorderBrush="Black" BorderThickness="1" Background="#FF43C755"/>
             <Button x:Name="CalculateButton" Content="Calculate" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,5,0,0" Click="CalculateButton_Click"/>
         </StackPanel>
     </Grid>
