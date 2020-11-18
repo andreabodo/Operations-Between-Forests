@@ -140,5 +140,26 @@ namespace OperationsBetweenForests.Output
                 }
             }
         }
+
+        private void InteractiveViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            string executable = @"x86\Debug\BrowserTest2.exe";
+            //string output = @"C:\Users\andre\Desktop\tempgraph";
+            //File.WriteAllText(output, dot);
+
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+
+            // Stop the process from opening a new window
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = false;
+
+            // Setup executable and parameters
+            process.StartInfo.FileName = executable;
+            // Go
+            process.Start();
+            // and wait dot.exe to complete and exit
+            //process.WaitForExit();
+        }
     }
 }

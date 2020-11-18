@@ -124,6 +124,12 @@
     <Compile Include="Output\GraphvizOutputTab.xaml.cs">
       <DependentUpon>GraphvizOutputTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Output\InteractiveOutput.xaml.cs">
+      <DependentUpon>InteractiveOutput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Output\SVGViewer.xaml.cs">
+      <DependentUpon>SVGViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\FileManager.cs" />
     <Compile Include="Serialization\YAXPointerSerializer.cs" />
     <Page Include="Calculation\ProductTab.xaml">
@@ -157,6 +163,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Output\GraphvizOutputTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Output\InteractiveOutput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Output\SVGViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
