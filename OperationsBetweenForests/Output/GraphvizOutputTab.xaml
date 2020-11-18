@@ -17,7 +17,7 @@
             <Image x:Name="GraphImage" Grid.Column="0" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" Stretch="None" MouseWheel="Image_MouseWheel"/>
         </ScrollViewer>
         <Button x:Name="ReloadButton" Content="Refresh" Grid.Column="1" Margin="57, 50, 58, 0" Click="RefreshButton_Click" Height="20" VerticalAlignment="Top"/>
-        <Grid x:Name="InfoGrid" Grid.Column="1" VerticalAlignment="Top" Margin="2, 150, 2, 0" Height="75">
+        <Grid x:Name="InfoGrid" Grid.Column="1" VerticalAlignment="Top" Margin="2, 90, 2, 0" Height="75">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="LabelsColumn" Width="*"/>
                 <ColumnDefinition x:Name="InfoColumn" Width="2*"/>
@@ -35,10 +35,13 @@
             <Label x:Name="EdgesLabel" Content="" Grid.Column="1" Grid.Row="2"/>
         </Grid>
         <ComboBox x:Name="GraphListComboBox" Grid.Column="1" HorizontalAlignment="Left" Width="160" Margin="10,14,0,0" VerticalAlignment="Top" SelectedIndex="0" MaxDropDownHeight="Auto"/>
-        <Button x:Name="ShowGraphButton" Content="Show" Grid.Column="1" Margin="57,250,58,0" Click="ShowGraphButton_Click" Height="20" VerticalAlignment="Top"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Margin="0,303,0,0" Height="47" VerticalAlignment="Top" HorizontalAlignment="Right" Width="170">
-            <TextBox x:Name="NewRootTextBox" Background="White" Width="100" Height="22" FontSize="11" VerticalAlignment="Center" Margin="5,0,0,0" />
-            <Button x:Name="AddRootButton" Content="Add Root" Background="Gray" Height="22" Margin="7" Click="AddRootButton_Click"/>
+        <Button x:Name="ShowGraphButton" Content="Show" Grid.Column="1" Margin="57,175,58,0" Click="ShowGraphButton_Click" Height="20" VerticalAlignment="Top"/>
+        <StackPanel Background="Green" Orientation="Vertical" Height="150" Width="170" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,220,0,0">
+            <TextBox x:Name="NewForestNameTextBox" Text="New forest name" Height="22" FontSize="12" HorizontalAlignment="Left" Margin="0,2,0,8"/>
+            <StackPanel Background="red" Orientation="Horizontal" HorizontalAlignment="Center" Height="auto">
+                <TextBox x:Name="NewRootTextBox" Background="White" Width="100" Height="22" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0" />
+                <Button x:Name="AddRootButton" Content="Add Root" Background="LightGray" Height="22" Margin="7" Click="AddRootButton_Click"/>
+            </StackPanel>
         </StackPanel>
         <Button x:Name="LoadButton" Content="Load" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" Margin="57,0,58,20" Click="LoadButton_Click"/>
     </Grid>

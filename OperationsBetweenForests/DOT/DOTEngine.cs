@@ -26,7 +26,7 @@ namespace OperationsBetweenForests.DOT
 
             // Setup executable and parameters
             process.StartInfo.FileName = executable;
-            process.StartInfo.Arguments = string.Format(@"{0} -Tpng -O", dotFilePath);
+            process.StartInfo.Arguments = string.Format(@"{0} -Tsvg -O", dotFilePath);
 
             // Go
             process.Start();

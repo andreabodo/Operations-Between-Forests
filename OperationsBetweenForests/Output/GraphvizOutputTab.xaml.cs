@@ -121,16 +121,22 @@ namespace OperationsBetweenForests.Output
                         //MainWindow.Forests.Add(currentForest.Name, currentForest);
                         //RefreshButton_Click(this, new RoutedEventArgs(MouseUpEvent));
                         //currentForest.Name += Time
-                        currentForest.DestroyChildrenRelationships();
-                        FileManager.SaveToJsonFile(currentForest);
+                        if(currentForest.Name != NewForestNameTextBox.Text.Trim())
+                        {
+                            currentForest.Name = NewForestNameTextBox.Text.Trim();
+                            currentForest.DestroyChildrenRelationships();
+                            FileManager.SaveToJsonFile(currentForest);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Inserire un nome foresta differente da quello di origine.\nAggiunta radice non riuscita");
+                        } 
                     }
                 }
                 else
                 {
                     MessageBox.Show("Aggiunta radice non riuscita");
                 }
-               
-                
             }
         }
     }
