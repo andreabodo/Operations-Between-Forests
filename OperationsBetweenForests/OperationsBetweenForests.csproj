@@ -101,9 +101,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="YAXLib, Version=2.15.0.0, Culture=neutral, PublicKeyToken=15c43682c986900f, processorArchitecture=MSIL">
-      <HintPath>..\packages\YAXLib.2.15\lib\net4.0\YAXLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -116,14 +113,10 @@
     <Compile Include="Calculation\ProductTab.xaml.cs">
       <DependentUpon>ProductTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core2\Forest.cs" />
-    <Compile Include="Core2\Operations.cs" />
-    <Compile Include="Core2\Tree.cs" />
     <Compile Include="Core\ForestCalculator.cs" />
     <Compile Include="DOT\DOTCompiler.cs" />
     <Compile Include="DOT\DOTEngine.cs" />
     <Compile Include="DOT\ModeEnum.cs" />
-    <Compile Include="LogicCoreTreeProvider.cs" />
     <Compile Include="Output\GraphvizOutputTab.xaml.cs">
       <DependentUpon>GraphvizOutputTab.xaml</DependentUpon>
     </Compile>
@@ -134,7 +127,6 @@
       <DependentUpon>SVGViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Serialization\FileManager.cs" />
-    <Compile Include="Serialization\YAXPointerSerializer.cs" />
     <Page Include="Calculation\Forest union.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
