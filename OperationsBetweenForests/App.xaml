@@ -6,7 +6,7 @@
     <Application.Resources>
         <Style x:Key="buttonsStyle" TargetType="Button">
             <Setter Property="Background" Value="#E50056FF"/>
-            <Setter Property="Foreground" Value="Orange"/>
+            <Setter Property="Foreground" Value="Gold"/>
         </Style>
     </Application.Resources>
 </Application>
