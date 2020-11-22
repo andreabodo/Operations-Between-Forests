@@ -157,10 +157,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Output\GraphOutputTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Output\GraphvizOutputTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,14 +171,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\DataEdge.cs" />
-    <Compile Include="Models\DataVertex.cs" />
-    <Compile Include="Models\MyGXLogicCore.cs" />
-    <Compile Include="Models\MyGraph.cs" />
-    <Compile Include="Models\MyGraphArea.cs" />
-    <Compile Include="Output\GraphOutputTab.xaml.cs">
-      <DependentUpon>GraphOutputTab.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

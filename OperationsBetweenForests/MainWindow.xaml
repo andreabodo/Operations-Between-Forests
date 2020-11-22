@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OperationsBetweenForests"
         xmlns:controls="clr-namespace:GraphX.Controls;assembly=GraphX.WPF.Controls"
-        xmlns:models="clr-namespace:OperationsBetweenForests.Models"
         xmlns:output ="clr-namespace:OperationsBetweenForests.Output"
         xmlns:input = "clr-namespace:OperationsBetweenForests.Input"
         xmlns:calculation ="clr-namespace:OperationsBetweenForests.Calculation"
